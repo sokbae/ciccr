@@ -1,0 +1,60 @@
+---
+title: "Causaul Inference in Case-Control Studies: Vignette"
+output: rmarkdown::html_vignette
+description: >
+  This vignette describes how to replicate the empirical results reported
+  in the paper entitled "Causaul Inference in Case-Control Studies".
+vignette: >
+  %\VignetteIndexEntry{Causaul Inference in Case-Control Studies: Vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(ciccr)
+devtools::load_all(".")
+```
+
+This vignette describes how to replicate the empirical results reported
+  in the paper entitled "Causaul Inference in Case-Control Studies".
+
+# Overview
+
+1.  
+
+1.  
+
+We first define variables using the ACS dataset.
+
+```{r}
+  y = ACS$topincome
+  t = ACS$baplus
+  x = ACS$age
+```
+
+Then, we run the following code.
+
+```{r}
+  results = avg_retro_logit(y,t,x,'case')
+  est_case = results$est
+  se_case = results$se
+```
+
+
+```{r}
+  avg_retro_logit(y,t,x,'case')
+  avg_retro_logit(y,t,x,'control')
+```
+
+
+```{r}
+  cicc(y,t,x,0.2)
+```
+
