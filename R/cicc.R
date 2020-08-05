@@ -29,7 +29,8 @@ cicc = function(y,t,x,p){
     ub_se = sqrt(ub_var)
   }
 
-  output_list <- list("est"=ub_est,"se"=ub_se)
+  outputs = list("coefficients"=ub_est,"se"=ub_se)
 
-  output_list
+  class(outputs) = "ciccr"
+  outputs
 }
