@@ -17,17 +17,21 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
-library(ciccr)
+```{r, include = FALSE}
+# Need to delete this part for CRAN submission
+library(devtools)
 devtools::load_all(".")
 ```
 
-This vignette describes how to replicate the empirical results reported
-  in the paper entitled "Causaul Inference in Case-Control Studies".
+```{r setup}
+library(ciccr)
+```
+
+This vignette describes how to use package "ciccr" that is based on the paper entitled  "Causaul Inference in Case-Control Studies".
 
 # Tutorials
 
-To illustrate our method, we use the dataset ACS that is included the packcage. This dataset is a extract from American Community Survey (ACS) 2018, restricted to white males residing in California with at least a bachelor's degree. The ACS is an ongoing annual survey by the US Census Bureau that provides key information about US population. The included variables are as follows:  
+To illustrate the usefulness of the package, we use the dataset ACS that is included the packcage. This dataset is a extract from American Community Survey (ACS) 2018, restricted to white males residing in California with at least a bachelor's degree. The ACS is an ongoing annual survey by the US Census Bureau that provides key information about US population. We use the following variables:  
 
 ```{r}
   y = ACS$topincome
@@ -59,22 +63,37 @@ $$
 Using the retropspective sieve logistric regression model, we estimate $\beta(1)$ by
 
 ```{r}
-  results_case = avg_retro_logit(y,t,x,'case')
+  results_case = avg_retro_logit(y, t, x, 'case')
   results_case$est
   results_case$se
 ```
 
-Here, option `'case'` refers to conditioning on $Y=1$. Similarly, we estimate $\beta(0)$ by
+Here, option `'case'` refers to conditioning on $Y=1$. 
+
+Similarly, we estimate $\beta(0)$ by
 
 ```{r}
-  results_control = avg_retro_logit(y,t,x,'control')
+  results_control = avg_retro_logit(y, t, x, 'control')
   results_control$est
   results_control$se
 ```
 
-Here, option `'control'` refers to conditioning on $Y=1$. We now carry out causal inference by
+Here, option `'control'` refers to conditioning on $Y=1$. 
+
+We carry out causal inference by
 
 ```{r}
-  cicc(y,t,x,0.2)
+  cicc(y, t, x, 0.2)
 ```
+
+Here, 0.2 is the specified upper bound for unknown $p = \text{Pr}(Y=1)$. If it is not specified, the dafault choice for $p$ is $p = 1$.
+
+```{r}
+  cicc(y, t, x)
+```
+
+# Reference
+
+Sung Jae Jun and Sokbae Lee. Causal Inference in Case-Control Studies. 
+https://arxiv.org/abs/2004.08318.
 

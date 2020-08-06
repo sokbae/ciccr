@@ -21,7 +21,7 @@ library(readr)
   ACS = ACS[,-2]  # drop the marital status variable
     n = nrow(ACS)
   ACS = ACS[sample.int(n,n),] # random permutation to shuffle the data
-  rownames(ACS) <- c()        # remove row names
+  rownames(ACS) = c()        # remove row names
 
   write_csv(ACS, "data-raw/ACS.csv")
   usethis::use_data(ACS, overwrite = TRUE)

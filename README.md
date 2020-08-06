@@ -7,7 +7,8 @@
 
 <!-- badges: end -->
 
-The goal of ciccr is to …
+The goal of ciccr is to implement inference methods described in the
+paper entitled “Causal Inference in Case-Control Studies”.
 
 ## Installation
 
@@ -29,17 +30,14 @@ devtools::install_github("sokbae/ciccr")
 
 ``` r
 library(ciccr)
-devtools::load_all(".")
-#> Loading ciccr
-## basic example code
 ```
 
-To illustrate our method, we use the dataset ACS that is included the
-packcage. This dataset is a extract from American Community Survey (ACS)
-2018, restricted to white males residing in California with at least a
-bachelor’s degree. The ACS is an ongoing annual survey by the US Census
-Bureau that provides key information about US population. The included
-variables are as follows:
+To illustrate the usefulness of the package, we use the dataset ACS that
+is included the packcage. This dataset is a extract from American
+Community Survey (ACS) 2018, restricted to white males residing in
+California with at least a bachelor’s degree. The ACS is an ongoing
+annual survey by the US Census Bureau that provides key information
+about US population. We use the following variables:
 
 ``` r
   y = ACS$topincome
@@ -47,24 +45,24 @@ variables are as follows:
   x = ACS$age
 ```
 
-  - The binary outcome \`Top Income’ (\(Y\)) is defined to be one if a
+  - The binary outcome \`Top Income’ is defined to be one if a
     respondent’s annual total pre-tax wage and salary income is
     top-coded. In our sample extract, the top-coded income bracket has
     median income $565,000 and the next highest income that is not
     top-coded is $327,000.
 
-  - The binary treatment (\(T\)) is defined to be one if a respondent
-    has a master’s degree, a professional degree, or a doctoral degree.
+  - The binary treatment is defined to be one if a respondent has a
+    master’s degree, a professional degree, or a doctoral degree.
 
-  - The covariate (\(X\)) is age in years and is restricted to be
-    between 25 and 70.
+  - The covariate is age in years and is restricted to be between 25 and
+    70.
 
 The original ACS sample is not a case-control sample but we construct
 one by the following procedure.
 
-1.  The case sample \((Y=1)\) is composed of 921 individuals whose
-    income is top-coded.
-2.  The control sample \((Y=0)\) of equal size is randomly drawn without
+1.  The case sample is composed of 921 individuals whose income is
+    top-coded.
+2.  The control sample of equal size is randomly drawn without
     replacement from the pool of individuals whose income is not
     top-coded.
 
@@ -75,14 +73,11 @@ age variable.
   x = splines::bs(x, df = 6)
 ```
 
-Define \(\beta(y) = E [\log \text{OR}(X) | Y = y]\) for \(y = 0,1\),
-where \(\text{OR}(x)\) is the odds ratio conditional on \(X=x\): \[
-\text{OR}(x) = \frac{P(T=1|Y=1,X=x)}{P(T=0|Y=1,X=x)}\frac{P(T=0|Y=0,X=x)}{P(T=1|Y=0,X=x)}.
-\] Using the retropspective sieve logistric regression model, we
-estimate \(\beta(1)\) by
+Using the retropspective sieve logistric regression model, we estimate
+the average of the log odds ratio conditional on the case sample by
 
 ``` r
-  results_case = avg_retro_logit(y,t,x,'case')
+  results_case = avg_retro_logit(y, t, x, 'case')
   results_case$est
 #>         y 
 #> 0.7286012
@@ -91,11 +86,13 @@ estimate \(\beta(1)\) by
 #> 0.1013445
 ```
 
-Here, option `'case'` refers to conditioning on \(Y=1\). Similarly, we
-estimate \(\beta(0)\) by
+Here, option `'case'` refers to conditioning on \(Y=1\).
+
+Similarly, we estimate the average of the log odds ratio conditional on
+the control sample by
 
 ``` r
-  results_control = avg_retro_logit(y,t,x,'control')
+  results_control = avg_retro_logit(y, t, x, 'control')
   results_control$est
 #>         y 
 #> 0.5469094
@@ -104,12 +101,13 @@ estimate \(\beta(0)\) by
 #> 0.1518441
 ```
 
-Here, option `'control'` refers to conditioning on \(Y=1\). We now carry
-out causal inference by
+Here, option `'control'` refers to conditioning on \(Y=1\).
+
+We carry out causal inference by
 
 ``` r
-  cicc(y,t,x,0.2)
-#> $coefficients
+  cicc(y, t, x, 0.2)
+#> $est
 #>         y 
 #> 0.5832477 
 #> 
@@ -120,3 +118,26 @@ out causal inference by
 #> attr(,"class")
 #> [1] "ciccr"
 ```
+
+Here, 0.2 is the specified upper bound for unknown
+\(p = \text{Pr}(Y=1)\). If it is not specified, the dafault choice for
+\(p\) is \(p = 1\).
+
+``` r
+  cicc(y, t, x)
+#> $est
+#>         y 
+#> 0.7286012 
+#> 
+#> $se
+#>         y 
+#> 0.1013445 
+#> 
+#> attr(,"class")
+#> [1] "ciccr"
+```
+
+# Reference
+
+Sung Jae Jun and Sokbae Lee. Causal Inference in Case-Control Studies.
+<https://arxiv.org/abs/2004.08318>.

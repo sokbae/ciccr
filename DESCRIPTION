@@ -6,7 +6,7 @@ Authors@R: c(
     person("Jun", "Sung Jae", email = "suj14@psu.edu", role = "aut"),
     person("Lee", "Sokbae", email = "sl3841@columbia.edu", role = c("aut", "cre")))
 Description: R package for "Causal Inference in Case-Control Studies"
-    It replicates the numerical results reported in the paper entitled "Causal Inference in Case-Control Studies".
+    It implements inference methods described in the paper entitled "Causal Inference in Case-Control Studies".
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

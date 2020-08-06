@@ -1,11 +1,29 @@
-#' Average of the log odds ratio using retrospective logistic regression
+#' @title The Average of a Log Odds Ratio
+#'
+#' @description Averages a log odds ratio using retrospective logistic regression
 #'
 #' @param y n-dimensional vector of binary outcomes
 #' @param t n-dimensional vector of binary treatments
-#' @param x n by p matrix of matrix of covariates
+#' @param x n by p matrix of covariates
 #' @param w 'case' if the average is conditional on the case sample; 'control' if it is conditional on the control sample
-#' @return estimate and standard error of the weighted average of the log odds ratio using retrospective logistic regression
-avg_retro_logit = function(y,t,x,w){
+#' default w =  'control'
+#' @return An S3 object of type "ciccr". The object has the following elements.
+#' \item{est}{a scalar estimate of the weighted average of the log odds ratio using retrospective logistic regression}
+#' \item{se}{standard error}
+#'
+#' @examples
+#' # use the ACS dataset included in the package
+#'   y = ciccr::ACS$topincome
+#'   t = ciccr::ACS$baplus
+#'   x = ciccr::ACS$age
+#' # use 'case' to condition on the distribution of covariates given y = 1
+#'   w = 'case'
+#'   results = avg_retro_logit(y, t, x, w)
+#'
+#' @references Sung Jae Jun and Sokbae Lee. Causal Inference in Case-Control Studies.
+#' \url{https://arxiv.org/abs/2004.08318}.
+#' @export
+avg_retro_logit = function(y, t, x, w = 'control'){
 
   # Choice of the conditional distribution of covariates
   if (w=='case'){
@@ -34,7 +52,8 @@ avg_retro_logit = function(y,t,x,w){
   se_all = sqrt(diag(stats::vcov(lm_case)))
   se = se_all[2]
 
-  output_list <- list("est"=est,"se"=se)
+  outputs = list("est"=est,"se"=se)
+  class(outputs) = 'ciccr'
 
-  output_list
+  outputs
 }

@@ -2,22 +2,38 @@
 % Please edit documentation in R/cicc.R
 \name{cicc}
 \alias{cicc}
-\title{Upper bound on the average of log relative risk}
+\title{Causal Inference for Relative Risk}
 \usage{
-cicc(y, t, x, p)
+cicc(y, t, x, p = 1L)
 }
 \arguments{
 \item{y}{n-dimensional vector of binary outcomes}
 
 \item{t}{n-dimensional vector of binary treatments}
 
-\item{x}{n by p matrix of matrix of covariates}
+\item{x}{n by p matrix of covariates}
 
-\item{p}{the upper bound for the unknown true case probability}
+\item{p}{a specified upper bound for the unknown true case probability (default = 1)}
 }
 \value{
-estimate and standard error of the upper bound on the average of log relative risk
+An S3 object of type "ciccr". The object has the following elements.
+\item{est}{a scalar estimate of the upper bound on the average of log relative risk}
+\item{se}{standard error}
 }
 \description{
-Upper bound on the average of log relative risk
+Provides an upper bound on the average of log relative risk
+}
+\examples{
+# use the ACS dataset included in the package
+  y = ciccr::ACS$topincome
+  t = ciccr::ACS$baplus
+  x = ciccr::ACS$age
+# The upper bound for Pr(y=1) is set as p = 1 by default
+  cicc(y, t, x)
+# The upper bound for Pr(y=1) is set as p = 0.2 if a plausible upper bound is avaiable
+  cicc(y, t, x, 0.2)
+}
+\references{
+Sung Jae Jun and Sokbae Lee. Causal Inference in Case-Control Studies.
+\url{https://arxiv.org/abs/2004.08318}.
 }

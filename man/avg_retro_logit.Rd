@@ -2,22 +2,39 @@
 % Please edit documentation in R/avg_retro_logit.R
 \name{avg_retro_logit}
 \alias{avg_retro_logit}
-\title{Average of the log odds ratio using retrospective logistic regression}
+\title{The Average of a Log Odds Ratio}
 \usage{
-avg_retro_logit(y, t, x, w)
+avg_retro_logit(y, t, x, w = "control")
 }
 \arguments{
 \item{y}{n-dimensional vector of binary outcomes}
 
 \item{t}{n-dimensional vector of binary treatments}
 
-\item{x}{n by p matrix of matrix of covariates}
+\item{x}{n by p matrix of covariates}
 
-\item{w}{'case' if the average is conditional on the case sample; 'control' if it is conditional on the control sample}
+\item{w}{'case' if the average is conditional on the case sample; 'control' if it is conditional on the control sample
+default w =  'control'}
 }
 \value{
-estimate and standard error of the weighted average of the log odds ratio using retrospective logistic regression
+An S3 object of type "ciccr". The object has the following elements.
+\item{est}{a scalar estimate of the weighted average of the log odds ratio using retrospective logistic regression}
+\item{se}{standard error}
 }
 \description{
-Average of the log odds ratio using retrospective logistic regression
+Averages a log odds ratio using retrospective logistic regression
+}
+\examples{
+# use the ACS dataset included in the package
+  y = ciccr::ACS$topincome
+  t = ciccr::ACS$baplus
+  x = ciccr::ACS$age
+# use 'case' to condition on the distribution of covariates given y = 1
+  w = 'case'
+  results = avg_retro_logit(y, t, x, w)
+
+}
+\references{
+Sung Jae Jun and Sokbae Lee. Causal Inference in Case-Control Studies.
+\url{https://arxiv.org/abs/2004.08318}.
 }
