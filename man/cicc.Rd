@@ -4,7 +4,7 @@
 \alias{cicc}
 \title{Causal Inference for Relative Risk}
 \usage{
-cicc(y, t, x, p = 1L)
+cicc(y, t, x, p_upper = 1L, cov_prob = 0.95, length_SA = 20L)
 }
 \arguments{
 \item{y}{n-dimensional vector of binary outcomes}
@@ -13,25 +13,35 @@ cicc(y, t, x, p = 1L)
 
 \item{x}{n by p matrix of covariates}
 
-\item{p}{a specified upper bound for the unknown true case probability (default = 1)}
+\item{p_upper}{a specified upper bound for the unknown true case probability (default = 1)}
+
+\item{cov_prob}{parameter for coverage probability of a confidence interval (default = 0.95)}
+
+\item{length_SA}{specified length of a sequence for snesitivity analysis (default = 20)}
 }
 \value{
-An S3 object of type "ciccr". The object has the following elements.
+An S3 object of type "ciccr". The object has the following elements:
 \item{est}{a scalar estimate of the upper bound on the average of log relative risk}
 \item{se}{standard error}
+\item{ci}{upper end of confidence interval}
+\item{estSA}{sensitivity analysis: (length_SA)-dimensional vector of the upper bounds on the average of log relative risk}
+\item{seSA}{sensitivity analysis: (length_SA)-dimensional vector of pointwise standard errors}
+\item{ciSA}{sensitivity analysis: (length_SA)-dimensional vector of the upper ends of pointwise confidence interval}
 }
 \description{
 Provides an upper bound on the average of log relative risk
 }
 \examples{
-# use the ACS dataset included in the package
+# use the ACS dataset included in the package.
   y = ciccr::ACS$topincome
   t = ciccr::ACS$baplus
   x = ciccr::ACS$age
-# The upper bound for Pr(y=1) is set as p = 1 by default
+# The upper bound for Pr(y=1) is set as p_upper = 1 by default
+# with the defaulty coverage probability of 0.95.
   cicc(y, t, x)
-# The upper bound for Pr(y=1) is set as p = 0.2 if a plausible upper bound is avaiable
-  cicc(y, t, x, 0.2)
+# The upper bound for Pr(y=1) is set as p_upper = 0.2
+# with the coverage probablity of 0.99.
+  cicc(y, t, x, 0.2, 0.99)
 }
 \references{
 Sung Jae Jun and Sokbae Lee. Causal Inference in Case-Control Studies.
