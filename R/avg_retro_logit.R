@@ -35,6 +35,16 @@ avg_retro_logit = function(y, t, x, w = 'control'){
     stop("'w' must be either 'case' or 'control'.")
   }
 
+  # Check whether y is either 0 or 1
+  if ( sum( !(y %in% c(0,1)) ) > 0 ){
+    stop("Each element of 'y' must be either 0 or 1.")
+  }
+
+  # Check whether t is either 0 or 1
+  if ( sum( !(y %in% c(0,1)) ) > 0 ){
+    stop("Each element of 't' must be either 0 or 1.")
+  }
+
   # Demeaning for x
   if (ncol(as.matrix(x)) == 1L){
     xcase = x[y==yselected]

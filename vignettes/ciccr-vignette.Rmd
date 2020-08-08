@@ -17,17 +17,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r, include = FALSE}
-# Need to delete this part for CRAN submission
-library(devtools)
-devtools::load_all(".")
-```
-
 # Overview
-
-```{r setup}
-library(ciccr)
-```
 
 This vignette describes how to use package "ciccr" that is based on the paper entitled  "Causal Inference in Case-Control Studies".
 
@@ -36,6 +26,13 @@ This vignette describes how to use package "ciccr" that is based on the paper en
 This section will be added ...
 
 # Tutorials
+
+We first call the ciccr package.
+
+```{r setup}
+library(ciccr)
+```
+
 
 To illustrate the usefulness of the package, we use the dataset ACS that is included the package. This dataset is a extract from American Community Survey (ACS) 2018, restricted to white males residing in California with at least a bachelor's degree. The ACS is an ongoing annual survey by the US Census Bureau that provides key information about US population. We use the following variables:  
 
@@ -116,8 +113,10 @@ To be more compatible with the odds ratio, it is useful to transform them by the
 
 ```{r}
 logit = stats::glm(y~t+x, family=stats::binomial("logit"))
-stats::coef(logit)
-stats::confint(logit, level = 0.9)
+est_logit = stats::coef(logit)
+ci_logit = stats::confint(logit, level = 0.9)
+est_logit[2]
+ci_logit[2]
 ```
 
 
