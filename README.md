@@ -180,7 +180,7 @@ it is not specified, the default choice for `p` is `p = 1`.
 #> [1] "ciccr"
 ```
 
-More to be added
+More to be added in nea future…
 
 # Reference
 

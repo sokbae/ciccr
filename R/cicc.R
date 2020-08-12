@@ -7,12 +7,14 @@
 #' @param x n by p matrix of covariates
 #' @param p_upper a specified upper bound for the unknown true case probability (default = 1)
 #' @param cov_prob parameter for coverage probability of a confidence interval (default = 0.95)
+#' @param SA logical; if TRUE, the sensitivity results are included in the return outputs (default = TRUE)
 #' @param length_SA specified length of a sequence for snesitivity analysis (default = 20)
 #'
 #' @return An S3 object of type "ciccr". The object has the following elements:
 #' \item{est}{a scalar estimate of the upper bound on the average of log relative risk}
 #' \item{se}{standard error}
 #' \item{ci}{upper end of confidence interval}
+#' The following additional elements will be returned if SA is is TRUE.
 #' \item{estSA}{sensitivity analysis: (length_SA)-dimensional vector of the upper bounds on the average of log relative risk}
 #' \item{seSA}{sensitivity analysis: (length_SA)-dimensional vector of pointwise standard errors}
 #' \item{ciSA}{sensitivity analysis: (length_SA)-dimensional vector of the upper ends of pointwise confidence interval}
@@ -32,7 +34,7 @@
 #' \url{https://arxiv.org/abs/2004.08318}.
 #'
 #' @export
-cicc = function(y, t, x, p_upper = 1L, cov_prob = 0.95, length_SA = 20L){
+cicc = function(y, t, x, p_upper = 1L, cov_prob = 0.95, SA = TRUE, length_SA = 20L){
 
   # Check whether p_upper is in (0,1]
   if (p_upper <=0L || p_upper > 1L){
@@ -64,7 +66,10 @@ cicc = function(y, t, x, p_upper = 1L, cov_prob = 0.95, length_SA = 20L){
   cv_norm = stats::qnorm(cov_prob)
   ub_ci = ub_est + cv_norm*ub_se
 
+  outputs = list("est" = ub_est, "se" = ub_se, "ci" = ub_ci)
+
   # Sensitivity analysis
+  if (SA == 'True'){
   pseq = seq(from = 0, to = p_upper, length.out = ceiling(length_SA))
   xi = est_case*pseq + est_control*(1-pseq)
   xi_var = (se_case*pseq)^2 + (se_control*(1-pseq))^2
@@ -73,6 +78,7 @@ cicc = function(y, t, x, p_upper = 1L, cov_prob = 0.95, length_SA = 20L){
 
   outputs = list("est" = ub_est, "se" = ub_se, "ci" = ub_ci,
                  "est.SA" = xi, "se.SA" = xi_se, "ci.SA" = xi_ci)
+  }
   class(outputs) = "ciccr"
 
   outputs

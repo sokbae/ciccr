@@ -4,7 +4,7 @@
 \alias{cicc}
 \title{Causal Inference for Relative Risk}
 \usage{
-cicc(y, t, x, p_upper = 1L, cov_prob = 0.95, length_SA = 20L)
+cicc(y, t, x, p_upper = 1L, cov_prob = 0.95, SA = TRUE, length_SA = 20L)
 }
 \arguments{
 \item{y}{n-dimensional vector of binary outcomes}
@@ -17,6 +17,8 @@ cicc(y, t, x, p_upper = 1L, cov_prob = 0.95, length_SA = 20L)
 
 \item{cov_prob}{parameter for coverage probability of a confidence interval (default = 0.95)}
 
+\item{SA}{logical; if TRUE, the sensitivity results are included in the return outputs (default = TRUE)}
+
 \item{length_SA}{specified length of a sequence for snesitivity analysis (default = 20)}
 }
 \value{
@@ -24,6 +26,7 @@ An S3 object of type "ciccr". The object has the following elements:
 \item{est}{a scalar estimate of the upper bound on the average of log relative risk}
 \item{se}{standard error}
 \item{ci}{upper end of confidence interval}
+The following additional elements will be returned if SA is is TRUE.
 \item{estSA}{sensitivity analysis: (length_SA)-dimensional vector of the upper bounds on the average of log relative risk}
 \item{seSA}{sensitivity analysis: (length_SA)-dimensional vector of pointwise standard errors}
 \item{ciSA}{sensitivity analysis: (length_SA)-dimensional vector of the upper ends of pointwise confidence interval}

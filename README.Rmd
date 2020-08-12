@@ -50,9 +50,9 @@ To illustrate the usefulness of the package, we use the dataset ACS that is incl
   x = ACS$age
 ```
 
-- The binary outcome `y` is defined to be one if a respondent's annual total pre-tax wage and salary income is top-coded. In the sample extract, the top-coded income bracket has median income $565,000 and the next highest income that is not top-coded is $327,000.   
+- The binary outcome `y` is defined to be one if a respondent's annual total pre-tax wage and salary income is top-coded. In the sample extract, the top-coded income bracket has median income \$565,000 and the next highest income that is not top-coded is \$327,000.   
 
-- The binary treatment `t` is defined to be one if a respondent has a master's degree, a professional degree, or  a doctoral degree.
+- The binary treatment `t` is defined to be one if a respondent has a master's degree, a professional degree, or a doctoral degree.
 
 - The covariate `x` is age in years and is restricted to be between 25 and 70.
 
@@ -99,7 +99,7 @@ Here, 0.2 is the specified upper bound for unknown case probability. If it is no
   cicc(y, t, x)
 ```
 
-More to be added
+More to be added in nea future...
 
 # Reference
 
