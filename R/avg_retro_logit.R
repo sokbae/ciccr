@@ -1,6 +1,6 @@
-#' @title The Average of a Log Odds Ratio
+#' @title An Average of the Log Odds Ratio
 #'
-#' @description Averages a log odds ratio using retrospective logistic regression
+#' @description Averages the log odds ratio using retrospective logistic regression.
 #'
 #' @param y n-dimensional vector of binary outcomes
 #' @param t n-dimensional vector of binary treatments

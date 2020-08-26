@@ -12,7 +12,7 @@ The ciccr package provides methods for causal infernce in case-control studies.
 The package includes the following:
 \itemize{
 \item{\code{\link{cicc}}: }{carries out causual inference on relative risk.}
-\item{\code{\link{avg_retro_logit}}: }{averages a log odds ratio using retrospective logistic regression.}
+\item{\code{\link{avg_retro_logit}}: }{averages the log odds ratio using retrospective logistic regression.}
 \item{\code{\link{ACS}}: }{provides an illustrative case-control sample.}
 }
 }

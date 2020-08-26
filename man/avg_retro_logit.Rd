@@ -2,7 +2,7 @@
 % Please edit documentation in R/avg_retro_logit.R
 \name{avg_retro_logit}
 \alias{avg_retro_logit}
-\title{The Average of a Log Odds Ratio}
+\title{An Average of the Log Odds Ratio}
 \usage{
 avg_retro_logit(y, t, x, w = "control")
 }
@@ -22,7 +22,7 @@ An S3 object of type "ciccr". The object has the following elements.
 \item{se}{standard error}
 }
 \description{
-Averages a log odds ratio using retrospective logistic regression
+Averages the log odds ratio using retrospective logistic regression.
 }
 \examples{
 # use the ACS dataset included in the package

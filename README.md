@@ -111,78 +111,56 @@ is not top-coded.
 We carry out causal inference by
 
 ``` r
-  cicc(y, t, x, 0.2)
-#> $est
-#>         y 
-#> 0.5832477 
-#> 
-#> $se
-#>         y 
-#> 0.1231546 
-#> 
-#> $ci
-#>         y 
-#> 0.7858191 
-#> 
-#> $est.SA
-#>  [1] 0.5469094 0.5488219 0.5507345 0.5526470 0.5545596 0.5564721 0.5583847
-#>  [8] 0.5602972 0.5622097 0.5641223 0.5660348 0.5679474 0.5698599 0.5717725
-#> [15] 0.5736850 0.5755976 0.5775101 0.5794227 0.5813352 0.5832477
-#> 
-#> $se.SA
-#>  [1] 0.1518441 0.1502495 0.1486627 0.1470838 0.1455132 0.1439511 0.1423978
-#>  [8] 0.1408536 0.1393188 0.1377937 0.1362787 0.1347740 0.1332800 0.1317971
-#> [15] 0.1303256 0.1288660 0.1274187 0.1259841 0.1245626 0.1231546
-#> 
-#> $ci.SA
-#>  [1] 0.7966706 0.7959604 0.7952628 0.7945784 0.7939075 0.7932506 0.7926083
-#>  [8] 0.7919808 0.7913688 0.7907728 0.7901933 0.7896308 0.7890860 0.7885594
-#> [15] 0.7880516 0.7875633 0.7870953 0.7866480 0.7862224 0.7858191
-#> 
-#> attr(,"class")
-#> [1] "ciccr"
+  results = cicc(y, t, x, p_upper = 0.2)
 ```
 
 Here, 0.2 is the specified upper bound for unknown case probability. If
 it is not specified, the default choice for `p` is `p = 1`.
 
 ``` r
-  cicc(y, t, x)
-#> $est
-#>         y 
-#> 0.7286012 
-#> 
-#> $se
-#>         y 
-#> 0.1013445 
-#> 
-#> $ci
-#>         y 
-#> 0.8952981 
-#> 
-#> $est.SA
-#>  [1] 0.5469094 0.5564721 0.5660348 0.5755976 0.5851603 0.5947230 0.6042857
-#>  [8] 0.6138485 0.6234112 0.6329739 0.6425366 0.6520994 0.6616621 0.6712248
-#> [15] 0.6807876 0.6903503 0.6999130 0.7094757 0.7190385 0.7286012
-#> 
-#> $se.SA
-#>  [1] 0.15184407 0.14395113 0.13627866 0.12886605 0.12176076 0.11501975
-#>  [7] 0.10871083 0.10291349 0.09771881 0.09322759 0.08954575 0.08677636
-#> [13] 0.08500866 0.08430567 0.08469391 0.08615864 0.08864650 0.09207460
-#> [19] 0.09634262 0.10134450
-#> 
-#> $ci.SA
-#>  [1] 0.7966706 0.7932506 0.7901933 0.7875633 0.7854389 0.7839137 0.7830991
-#>  [8] 0.7831261 0.7841443 0.7863197 0.7898263 0.7948338 0.8014889 0.8098953
-#> [15] 0.8200966 0.8320686 0.8457235 0.8609250 0.8775080 0.8952981
-#> 
-#> attr(,"class")
-#> [1] "ciccr"
+  est = results$est
+  print(est)
+#>  [1] 0.5469094 0.5488219 0.5507345 0.5526470 0.5545596 0.5564721 0.5583847
+#>  [8] 0.5602972 0.5622097 0.5641223 0.5660348 0.5679474 0.5698599 0.5717725
+#> [15] 0.5736850 0.5755976 0.5775101 0.5794227 0.5813352 0.5832477
+  se = results$se
+  print(se)
+#>  [1] 0.1518441 0.1502495 0.1486627 0.1470838 0.1455132 0.1439511 0.1423978
+#>  [8] 0.1408536 0.1393188 0.1377937 0.1362787 0.1347740 0.1332800 0.1317971
+#> [15] 0.1303256 0.1288660 0.1274187 0.1259841 0.1245626 0.1231546
+  ci = results$ci
+  print(ci)
+#>  [1] 0.7966706 0.7959604 0.7952628 0.7945784 0.7939075 0.7932506 0.7926083
+#>  [8] 0.7919808 0.7913688 0.7907728 0.7901933 0.7896308 0.7890860 0.7885594
+#> [15] 0.7880516 0.7875633 0.7870953 0.7866480 0.7862224 0.7858191
 ```
 
-More to be added in nea future…
+The S3 objejct `results` contains a grid of estimates, standard errors
+and one-sided confidence intervals ranging from `p = 0` to `p =
+p_upper'. The default coverage probbabiilty is set at 0.95 and the
+default length of the grid is 20. Both can can be changed in the`cicc’
+command. For example, the following command sets the coverage
+probability at 0.9 and the length of the grid at 30.
 
-# Reference
+``` r
+  results = cicc(y, t, x, p_upper = 0.2, cov_prob = 0.9, length = 30L)
+```
+
+The point and confidence interval estimates of the \`cucc’ command is
+based on the scale of log relative risk. It is more conventional to look
+at the results in terms of the relative scale. To do so, we take the
+exponential:
+
+``` r
+  e_est = exp(est)
+  e_ci = exp(ci)
+```
+
+It is handy to examine the results by ploting a graph.
+
+TBD
+
+## Reference
 
 Sung Jae Jun and Sokbae Lee. Causal Inference in Case-Control Studies.
 <https://arxiv.org/abs/2004.08318>.

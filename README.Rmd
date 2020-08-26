@@ -90,18 +90,38 @@ Here, option `'control'` refers to conditioning on the event that income is not 
 We carry out causal inference by
 
 ```{r}
-  cicc(y, t, x, 0.2)
+  results = cicc(y, t, x, p_upper = 0.2)
 ```
-
-Here, 0.2 is the specified upper bound for unknown case probability. If it is not specified, the default choice for `p` is `p = 1`.
+Here, 0.2 is the specified upper bound for unknown case probability. If it is not specified, the default choice for `p` is `p = 1`. 
 
 ```{r}
-  cicc(y, t, x)
+  est = results$est
+  print(est)
+  se = results$se
+  print(se)
+  ci = results$ci
+  print(ci)
 ```
 
-More to be added in nea future...
+The S3 objejct `results` contains a grid of estimates, standard errors and one-sided confidence intervals ranging from `p = 0` to `p = p_upper'. 
+The default coverage probbabiilty is set at 0.95 and the default length of the grid is 20. Both can can be changed in the `cicc' command. For example, the following command sets the coverage probability at 0.9 and the length of the grid at 30.
 
-# Reference
+```{r}
+  results = cicc(y, t, x, p_upper = 0.2, cov_prob = 0.9, length = 30L)
+```
+
+The point and confidence interval estimates of the `cucc' command is based on the scale of log relative risk. It is more conventional to look at the results in terms of the relative scale. To do so, we take the exponential:  
+
+```{r}
+  e_est = exp(est)
+  e_ci = exp(ci)
+```
+
+It is handy to examine the results by ploting a graph.
+
+TBD
+
+## Reference
 
 Sung Jae Jun and Sokbae Lee. Causal Inference in Case-Control Studies. 
 https://arxiv.org/abs/2004.08318.
