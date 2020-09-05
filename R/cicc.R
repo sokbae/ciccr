@@ -13,6 +13,7 @@
 #' \item{est}{(length)-dimensional vector of the upper bounds on the average of log relative risk}
 #' \item{se}{(length)-dimensional vector of pointwise standard errors}
 #' \item{ci}{(length)-dimensional vector of the upper ends of pointwise confidence interval}
+#' \item{pseq}{(length)-dimensional vector of a grid from 0 to p_upper}
 #'
 #' @examples
 #' # use the ACS dataset included in the package.
@@ -58,7 +59,7 @@ cicc = function(y, t, x, p_upper = 1L, cov_prob = 0.95, length = 20L){
   xi_se = sqrt(xi_var)
   xi_ci = xi + cv_norm*xi_se
 
-  outputs = list("est" = xi, "se" = xi_se, "ci" = xi_ci)
+  outputs = list("est" = xi, "se" = xi_se, "ci" = xi_ci, "pseq" = pseq)
 
   class(outputs) = "ciccr"
 

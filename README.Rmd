@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of ciccr is to implement methods for carrying out causal inference in case-control studies.
+The goal of ciccr is to implement methods for carrying out causal inference in case-control studies ([Jun and Lee, 2020](https://arxiv.org/abs/2004.08318)).
 
 ## Installation
 
@@ -101,25 +101,53 @@ Here, 0.2 is the specified upper bound for unknown case probability. If it is no
   print(se)
   ci = results$ci
   print(ci)
+  pseq = results$pseq
+  print(pseq)
 ```
 
-The S3 objejct `results` contains a grid of estimates, standard errors and one-sided confidence intervals ranging from `p = 0` to `p = p_upper'. 
-The default coverage probbabiilty is set at 0.95 and the default length of the grid is 20. Both can can be changed in the `cicc' command. For example, the following command sets the coverage probability at 0.9 and the length of the grid at 30.
+The S3 objejct `results` contains a grid of estimates `est`, standard errors `se`, and one-sided confidence intervals `ci` ranging from `p = 0` to `p = p_upper`. In addition, the grid `pseq` from 0 to `p_upper` is saved as part of the S3 objejct `results`.
+
+The default coverage probbabiilty is set at 0.95 and the default length of the grid is 20. Both can can be changed in the `cicc` command. For example, the following command sets the coverage probability at 0.9 and the length of the grid at 30.
 
 ```{r}
   results = cicc(y, t, x, p_upper = 0.2, cov_prob = 0.9, length = 30L)
 ```
 
-The point and confidence interval estimates of the `cucc' command is based on the scale of log relative risk. It is more conventional to look at the results in terms of the relative scale. To do so, we take the exponential:  
+The point estimates and confidence interval estimates of the `cicc` command are based on the scale of log relative risk. It is more conventional to look at the results in terms of the relative scale. To do so, we take the exponential:  
 
 ```{r}
   e_est = exp(est)
   e_ci = exp(ci)
+  print(e_est)
+  print(e_ci)
 ```
 
 It is handy to examine the results by ploting a graph.
 
-TBD
+```{r}
+  yaxis_limit = c(min(e_est),(max(e_ci)+0.25*(max(e_ci)-min(e_est))))
+  plot(pseq, e_est, type = "l", lty = "solid", col = "blue", xlab = "Pr(Y*=1)",ylab = "exp(change in log probability)", xlim = c(0,max(pseq)), ylim = yaxis_limit)
+  lines(pseq, e_ci, type = "l", lty = "dashed", col = "red")
+```
+
+
+To interpret the results, we assume both marginal treatment response (MTR) and marginal treatment selection (MTS). In this setting, MTR means that everyone will not earn less by obtaining a degree higher than bachelor's degree; MTS indicates that those who selected into higher education have higher potential to earn top incomes. Based on the MTR and MTS assumptions, we can conclude that the treatment effect lies in between 1 and the upper end point of the one-sided confidence interval with high probability. Thus, the estimates in the graph gbove suggest that the effect of obtaining a degree higher than bachelor's degree is anywhere between [1, 2.2], which roughly implies that the chance of earning top incomes may increase up to by a factor of around 2, but allowing for possiblity of no positive effect at all. In other words, it is unlikely that the probability of earning top incomes will more than double by pursuing higher education beyond BA.  See [Jun and Lee, 2020](https://arxiv.org/abs/2004.08318) for more detailed explations regarding how to interpret the estimation results.  
+
+# Comparison with Logistic Regression
+
+We can compare these results with estimates obtained from logistic regression.
+
+```{r}
+logit = stats::glm(y~t+x, family=stats::binomial("logit"))
+est_logit = stats::coef(logit)
+ci_logit = stats::confint(logit, level = 0.9)
+# point estimate
+exp(est_logit)
+# confidence interval
+exp(ci_logit)
+```
+
+Here, the relevant cofficient is 2.06 (`t`) and its two-sided 90% confidence interval is [1.75, 2.43]. If we assume strong ignorabiity, the treatment effect is about 2 and its two-sided confidence interval is between [1.75, 2.43]. However, it is unlikely that the higher BA treatment satisfies the strong ignorability condition. 
 
 ## Reference
 

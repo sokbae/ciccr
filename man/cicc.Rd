@@ -24,6 +24,7 @@ An S3 object of type "ciccr". The object has the following elements:
 \item{est}{(length)-dimensional vector of the upper bounds on the average of log relative risk}
 \item{se}{(length)-dimensional vector of pointwise standard errors}
 \item{ci}{(length)-dimensional vector of the upper ends of pointwise confidence interval}
+\item{pseq}{(length)-dimensional vector of a grid from 0 to p_upper}
 }
 \description{
 Provides an upper bound on the average of log relative risk.

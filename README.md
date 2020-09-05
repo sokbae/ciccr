@@ -8,7 +8,8 @@
 <!-- badges: end -->
 
 The goal of ciccr is to implement methods for carrying out causal
-inference in case-control studies.
+inference in case-control studies ([Jun and
+Lee, 2020](https://arxiv.org/abs/2004.08318)).
 
 ## Installation
 
@@ -133,32 +134,107 @@ it is not specified, the default choice for `p` is `p = 1`.
 #>  [1] 0.7966706 0.7959604 0.7952628 0.7945784 0.7939075 0.7932506 0.7926083
 #>  [8] 0.7919808 0.7913688 0.7907728 0.7901933 0.7896308 0.7890860 0.7885594
 #> [15] 0.7880516 0.7875633 0.7870953 0.7866480 0.7862224 0.7858191
+  pseq = results$pseq
+  print(pseq)
+#>  [1] 0.00000000 0.01052632 0.02105263 0.03157895 0.04210526 0.05263158
+#>  [7] 0.06315789 0.07368421 0.08421053 0.09473684 0.10526316 0.11578947
+#> [13] 0.12631579 0.13684211 0.14736842 0.15789474 0.16842105 0.17894737
+#> [19] 0.18947368 0.20000000
 ```
 
-The S3 objejct `results` contains a grid of estimates, standard errors
-and one-sided confidence intervals ranging from `p = 0` to `p =
-p_upper'. The default coverage probbabiilty is set at 0.95 and the
-default length of the grid is 20. Both can can be changed in the`cicc’
-command. For example, the following command sets the coverage
-probability at 0.9 and the length of the grid at 30.
+The S3 objejct `results` contains a grid of estimates `est`, standard
+errors `se`, and one-sided confidence intervals `ci` ranging from `p
+= 0` to `p = p_upper`. In addition, the grid `pseq` from 0 to `p_upper`
+is saved as part of the S3 objejct `results`.
+
+The default coverage probbabiilty is set at 0.95 and the default length
+of the grid is 20. Both can can be changed in the `cicc` command. For
+example, the following command sets the coverage probability at 0.9 and
+the length of the grid at 30.
 
 ``` r
   results = cicc(y, t, x, p_upper = 0.2, cov_prob = 0.9, length = 30L)
 ```
 
-The point and confidence interval estimates of the \`cucc’ command is
-based on the scale of log relative risk. It is more conventional to look
-at the results in terms of the relative scale. To do so, we take the
-exponential:
+The point estimates and confidence interval estimates of the `cicc`
+command are based on the scale of log relative risk. It is more
+conventional to look at the results in terms of the relative scale. To
+do so, we take the exponential:
 
 ``` r
   e_est = exp(est)
   e_ci = exp(ci)
+  print(e_est)
+#>  [1] 1.727904 1.731212 1.734527 1.737847 1.741174 1.744507 1.747847 1.751193
+#>  [9] 1.754545 1.757904 1.761269 1.764641 1.768019 1.771404 1.774795 1.778193
+#> [17] 1.781597 1.785008 1.788425 1.791848
+  print(e_ci)
+#>  [1] 2.218144 2.216569 2.215023 2.213507 2.212023 2.210571 2.209151 2.207765
+#>  [9] 2.206415 2.205100 2.203822 2.202583 2.201383 2.200224 2.199108 2.198034
+#> [17] 2.197005 2.196023 2.195089 2.194203
 ```
 
 It is handy to examine the results by ploting a graph.
 
-TBD
+``` r
+  yaxis_limit = c(min(e_est),(max(e_ci)+0.25*(max(e_ci)-min(e_est))))
+  plot(pseq, e_est, type = "l", lty = "solid", col = "blue", xlab = "Pr(Y*=1)",ylab = "exp(change in log probability)", xlim = c(0,max(pseq)), ylim = yaxis_limit)
+  lines(pseq, e_ci, type = "l", lty = "dashed", col = "red")
+```
+
+<img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />
+
+To interpret the results, we assume both marginal treatment response
+(MTR) and marginal treatment selection (MTS). In this setting, MTR means
+that everyone will not earn less by obtaining a degree higher than
+bachelor’s degree; MTS indicates that those who selected into higher
+education have higher potential to earn top incomes. Based on the MTR
+and MTS assumptions, we can conclude that the treatment effect lies in
+between 1 and the upper end point of the one-sided confidence interval
+with high probability. Thus, the estimates in the graph gbove suggest
+that the effect of obtaining a degree higher than bachelor’s degree is
+anywhere between \[1, 2.2\], which roughly implies that the chance of
+earning top incomes may increase up to by a factor of around 2, but
+allowing for possiblity of no positive effect at all. In other words, it
+is unlikely that the probability of earning top incomes will more than
+double by pursuing higher education beyond BA. See [Jun and
+Lee, 2020](https://arxiv.org/abs/2004.08318) for more detailed
+explations regarding how to interpret the estimation results.
+
+# Comparison with Logistic Regression
+
+We can compare these results with estimates obtained from logistic
+regression.
+
+``` r
+logit = stats::glm(y~t+x, family=stats::binomial("logit"))
+est_logit = stats::coef(logit)
+ci_logit = stats::confint(logit, level = 0.9)
+#> Waiting for profiling to be done...
+# point estimate
+exp(est_logit)
+#> (Intercept)           t          x1          x2          x3          x4 
+#>  0.05461156  2.06117153  4.42179639 12.99601849 19.03962976 26.83565737 
+#>          x5          x6 
+#>  6.42381406 26.14359394
+# confidence interval
+exp(ci_logit)
+#>                     5 %       95 %
+#> (Intercept)  0.01960819  0.1304108
+#> t            1.75166056  2.4271287
+#> x1           1.05679997 21.6604223
+#> x2           5.50583091 33.8909622
+#> x3           6.79458010 61.3258710
+#> x4          10.22943808 78.7353953
+#> x5           2.00536450 22.8509008
+#> x6           8.66983039 87.6311482
+```
+
+Here, the relevant cofficient is 2.06 (`t`) and its two-sided 90%
+confidence interval is \[1.75, 2.43\]. If we assume strong ignorabiity,
+the treatment effect is about 2 and its two-sided confidence interval is
+between \[1.75, 2.43\]. However, it is unlikely that the higher BA
+treatment satisfies the strong ignorability condition.
 
 ## Reference
 
