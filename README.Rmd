@@ -16,14 +16,14 @@ knitr::opts_chunk$set(
 # ciccr
 
 <!-- badges: start -->
-[![Travis build status](https://travis-ci.com/sokbae/ciccr.svg?branch=master)](https://travis-ci.com/sokbae/ciccr)
+[![Travis build status](https://travis-ci.org/sokbae/ciccr.svg?branch=master)](https://travis-ci.org/github/sokbae/ciccr)
 <!-- badges: end -->
 
 The goal of ciccr is to implement methods for carrying out causal inference in case-control studies ([Jun and Lee, 2020](https://arxiv.org/abs/2004.08318)).
 
 ## Installation
 
-You can install the released version of ciccr from [CRAN](https://CRAN.R-project.org) with:
+[Pending] You can install the released version of ciccr from [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
 install.packages("ciccr")
