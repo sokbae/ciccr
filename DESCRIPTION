@@ -3,8 +3,8 @@ Type: Package
 Title: Causal Inference in Case-Control Studies
 Version: 0.1.0
 Authors@R: c(
-    person("Jun", "Sung Jae", email = "suj14@psu.edu", role = "aut"),
-    person("Lee", "Sokbae", email = "sl3841@columbia.edu", role = c("aut", "cre")))
+    person("Sung Jae", "Jun", email = "suj14@psu.edu", role = "aut"),
+    person("Sokbae", "Lee", email = "sl3841@columbia.edu", role = c("aut", "cre")))
 Description: R package for "Causal Inference in Case-Control Studies"
     It implements inference methods described in the paper entitled "Causal Inference in Case-Control Studies".
 License: GPL-3
