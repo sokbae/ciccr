@@ -144,12 +144,12 @@ it is not specified, the default choice for `p` is `p = 1`.
 #> [19] 0.18947368 0.20000000
 ```
 
-The S3 objejct `results` contains a grid of estimates `est`, standard
+The S3 object `results` contains a grid of estimates `est`, standard
 errors `se`, and one-sided confidence intervals `ci` ranging from `p
 = 0` to `p = p_upper`. In addition, the grid `pseq` from 0 to `p_upper`
-is saved as part of the S3 objejct `results`.
+is saved as part of the S3 object `results`.
 
-The default coverage probbabiilty is set at 0.95 and the default length
+The default coverage probability is set at 0.95 and the default length
 of the grid is 20. Both can can be changed in the `cicc` command. For
 example, the following command sets the coverage probability at 0.9 and
 the length of the grid at 30.
@@ -176,7 +176,7 @@ do so, we take the exponential:
 #> [17] 2.197005 2.196023 2.195089 2.194203
 ```
 
-It is handy to examine the results by ploting a graph.
+It is handy to examine the results by plotting a graph.
 
 ``` r
   yaxis_limit = c(min(e_est),(max(e_ci)+0.25*(max(e_ci)-min(e_est))))
@@ -193,15 +193,15 @@ bachelor’s degree; MTS indicates that those who selected into higher
 education have higher potential to earn top incomes. Based on the MTR
 and MTS assumptions, we can conclude that the treatment effect lies in
 between 1 and the upper end point of the one-sided confidence interval
-with high probability. Thus, the estimates in the graph gbove suggest
+with high probability. Thus, the estimates in the graph above suggest
 that the effect of obtaining a degree higher than bachelor’s degree is
 anywhere between \[1, 2.2\], which roughly implies that the chance of
 earning top incomes may increase up to by a factor of around 2, but
-allowing for possiblity of no positive effect at all. In other words, it
-is unlikely that the probability of earning top incomes will more than
-double by pursuing higher education beyond BA. See [Jun and
+allowing for possibility of no positive effect at all. In other words,
+it is unlikely that the probability of earning top incomes will more
+than double by pursuing higher education beyond BA. See [Jun and
 Lee, 2020](https://arxiv.org/abs/2004.08318) for more detailed
-explations regarding how to interpret the estimation results.
+explanations regarding how to interpret the estimation results.
 
 # Comparison with Logistic Regression
 
@@ -232,8 +232,8 @@ exp(ci_logit)
 #> x6           8.66983039 87.6311482
 ```
 
-Here, the relevant cofficient is 2.06 (`t`) and its two-sided 90%
-confidence interval is \[1.75, 2.43\]. If we assume strong ignorabiity,
+Here, the relevant coefficient is 2.06 (`t`) and its two-sided 90%
+confidence interval is \[1.75, 2.43\]. If we assume strong ignorability,
 the treatment effect is about 2 and its two-sided confidence interval is
 between \[1.75, 2.43\]. However, it is unlikely that the higher BA
 treatment satisfies the strong ignorability condition.
