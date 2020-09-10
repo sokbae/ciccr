@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 # ciccr
 
 <!-- badges: start -->
-[![Travis build status](https://travis-ci.com/sokbae/ciccr.svg?branch=master)](https://travis-ci.com/sokbae/ciccr)
+[![Travis build status](https://travis-ci.org/github/sokbae/ciccr.svg?branch=master)](https://travis-ci.org/github/sokbae/ciccr)
 <!-- badges: end -->
 
 The goal of ciccr is to implement methods for carrying out causal inference in case-control studies ([Jun and Lee, 2020](https://arxiv.org/abs/2004.08318)).
