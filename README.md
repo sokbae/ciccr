@@ -5,6 +5,8 @@
 
 <!-- badges: start -->
 
+[![Travis build
+status](https://travis-ci.com/sokbae/ciccr.svg?branch=master)](https://travis-ci.com/sokbae/ciccr)
 <!-- badges: end -->
 
 The goal of ciccr is to implement methods for carrying out causal
