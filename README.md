@@ -15,7 +15,7 @@ Lee, 2020](https://arxiv.org/abs/2004.08318)).
 
 ## Installation
 
-\[Pending\] You can install the released version of ciccr from
+You can install the released version of ciccr from
 [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
