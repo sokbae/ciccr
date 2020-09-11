@@ -5,8 +5,9 @@ Version: 0.1.0
 Authors@R: c(
     person("Sung Jae", "Jun", email = "suj14@psu.edu", role = "aut"),
     person("Sokbae", "Lee", email = "sl3841@columbia.edu", role = c("aut", "cre")))
-Description: R package for "Causal Inference in Case-Control Studies"
-    It implements inference methods described in the paper entitled "Causal Inference in Case-Control Studies".
+Description: Estimation and inference methods for causal relative risk.
+    Semiparametrically efficient estimation of the aggregated (log) odds ratio and a causal inference procedure for relative risk. 
+    For more details, see the paper by Jun and Lee (2020), "Causal Inference in Case-Control Studies," <arXiv:2004.08318 [econ.EM]>.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -21,6 +22,5 @@ Suggests:
 VignetteBuilder: knitr
 Depends: 
     R (>= 2.10)
-URL: http://github.com/sokbae/ciccr
-BugReports: http://github.com/sokbae/ciccr/issues
-
+URL: https://github.com/sokbae/ciccr/
+BugReports: https://github.com/sokbae/ciccr/issues

@@ -19,5 +19,7 @@ There was 1 NOTE:
 ## Downstream dependencies
 There are currently no downstream dependencies for this package.
 
-## CRAN Submission
-This is the first submission to CRAN.
+## CRAN Resubmission
+This is a resubmission. In this version:
+
+* The DESCRIPTION file is updated.
