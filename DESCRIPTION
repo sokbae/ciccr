@@ -1,7 +1,7 @@
 Package: ciccr
 Type: Package
 Title: Causal Inference in Case-Control Studies
-Version: 0.1.0
+Version: 0.1.0.9000
 Authors@R: c(
     person("Sung Jae", "Jun", email = "suj14@psu.edu", role = "aut"),
     person("Sokbae", "Lee", email = "sl3841@columbia.edu", role = c("aut", "cre")))
@@ -13,12 +13,12 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1
 Imports: 
-    stats,
-    MASS
+    stats
 Suggests: 
     knitr,
     rmarkdown,
-    testthat
+    testthat,
+    MASS
 VignetteBuilder: knitr
 Depends: 
     R (>= 2.10)
