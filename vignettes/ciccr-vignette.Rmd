@@ -24,10 +24,11 @@ This vignette describes how to use package "ciccr" that is based on the paper en
 
 # Tutorials
 
-We first call the ciccr package.
+We first load the ciccr and MASS packages.
 
 ```{r setup}
 library(ciccr)
+library(MASS)
 ```
 
 
