@@ -43,10 +43,14 @@ avg_AR_logit = function(y, t, x, sampling = 'cc', p_upper = 1L, length = 20L){
 
   # Prospective logistic estimation of P(Y=1|X=x)
 
+  small_e = 1e-8
+
   lm_pro = stats::glm(y~x, family=stats::binomial("logit"))
   est_pro = stats::coef(lm_pro)
   fit_pro = stats::fitted.values(lm_pro)
   fit_pro = matrix(fit_pro,ncol=1)
+
+  fit_pro = fit_pro + small_e*(fit_pro < small_e) + (1-small_e)*(fit_pro > (1-small_e))
 
   # Estimation of r(x,p)
 
@@ -57,6 +61,7 @@ avg_AR_logit = function(y, t, x, sampling = 'cc', p_upper = 1L, length = 20L){
   if (sampling=='cc'){
     r_num = ((1-hhat)*fit_pro)%*%pseq
     r_den = r_num + (hhat*(1-fit_pro))%*%(1-pseq)
+    r_den = r_den + small_e*(r_den < small_e)
     r_cc = r_num/r_den
   }  else if (sampling=='cp'){
     r1 = (1-hhat)/hhat
@@ -74,6 +79,10 @@ avg_AR_logit = function(y, t, x, sampling = 'cc', p_upper = 1L, length = 20L){
   fit_ret_y1 = exp(x_reg_y1%*%est_ret)/(1+exp(x_reg_y1%*%est_ret))
   fit_ret_y0 = exp(x_reg_y0%*%est_ret)/(1+exp(x_reg_y0%*%est_ret))
 
+  fit_ret_y1 = fit_ret_y1 + small_e*(fit_ret_y1 < small_e) + (1-small_e)*(fit_ret_y1 > (1-small_e))
+  fit_ret_y0 = fit_ret_y0 + small_e*(fit_ret_y0 < small_e) + (1-small_e)*(fit_ret_y0 > (1-small_e))
+
+
   # Estimation of Gamma_AR(x,p)
 
   P11 = fit_ret_y1
@@ -82,7 +91,7 @@ avg_AR_logit = function(y, t, x, sampling = 'cc', p_upper = 1L, length = 20L){
   P10 = matrix(P10, ncol=1)%*%matrix(1, nrow=1, ncol=ncol(pseq))
 
   P01 = 1 - P11
-  P00 = 1 - P01
+  P00 = 1 - P10
 
   # Estimation of beta_AR(p,y)
 
