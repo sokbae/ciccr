@@ -41,7 +41,7 @@ avg_retro_logit = function(y, t, x, w = 'control'){
   }
 
   # Check whether t is either 0 or 1
-  if ( sum( !(y %in% c(0,1)) ) > 0 ){
+  if ( sum( !(t %in% c(0,1)) ) > 0 ){
     stop("Each element of 't' must be either 0 or 1.")
   }
 
