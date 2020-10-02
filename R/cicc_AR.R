@@ -8,13 +8,13 @@
 #' @param sampling 'cc' for case-control sampling; 'cp' for case-population sampling (default sampling =  'cc')
 #' @param p_upper a specified upper bound for the unknown true case probability (default = 1)
 #' @param cov_prob parameter for coverage probability of a confidence interval (default = 0.95)
-#' @param length specified length of a sequence from 0 to p_upper (default = 20)
-#' @param no_boot number of bootstrap repetitions to compute the confidence interval (default = 1000)
+#' @param length specified length of a sequence from 0 to p_upper (default = 21)
+#' @param no_boot number of bootstrap repetitions to compute the confidence intervals (default = 999)
 #'
 #' @return An S3 object of type "ciccr". The object has the following elements:
 #' \item{est}{(length)-dimensional vector of the upper bounds on the average of attributable risk}
 #' \item{se}{(length)-dimensional vector of pointwise standard errors}
-#' \item{ci}{(length)-dimensional vector of the upper ends of pointwise confidence interval}
+#' \item{ci}{(length)-dimensional vector of the upper ends of pointwise confidence intervals}
 #' \item{pseq}{(length)-dimensional vector of a grid from 0 to p_upper}
 #'
 #' @examples
@@ -28,7 +28,7 @@
 #' \url{https://arxiv.org/abs/2004.08318}.
 #'
 #' @export
-cicc_AR = function(y, t, x, sampling = 'cc', p_upper = 1L, cov_prob = 0.95, length = 20L, no_boot = 1000L){
+cicc_AR = function(y, t, x, sampling = 'cc', p_upper = 1L, cov_prob = 0.95, length = 21L, no_boot = 999L){
 
   # Check whether p_upper is in (0,1]
   if (p_upper <=0L || p_upper > 1L){
@@ -41,7 +41,7 @@ cicc_AR = function(y, t, x, sampling = 'cc', p_upper = 1L, cov_prob = 0.95, leng
   }
 
   n = length(y)
-  results = avg_AR_logit(y, t, x, sampling)
+  results = avg_AR_logit(y, t, x, sampling, p_upper, length)
   est = results$est
   pseq = results$pseq
 

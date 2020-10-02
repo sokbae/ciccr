@@ -11,8 +11,8 @@ cicc_AR(
   sampling = "cc",
   p_upper = 1L,
   cov_prob = 0.95,
-  length = 20L,
-  no_boot = 1000L
+  length = 21L,
+  no_boot = 999L
 )
 }
 \arguments{
@@ -28,15 +28,15 @@ cicc_AR(
 
 \item{cov_prob}{parameter for coverage probability of a confidence interval (default = 0.95)}
 
-\item{length}{specified length of a sequence from 0 to p_upper (default = 20)}
+\item{length}{specified length of a sequence from 0 to p_upper (default = 21)}
 
-\item{no_boot}{number of bootstrap repetitions to compute the confidence interval (default = 1000)}
+\item{no_boot}{number of bootstrap repetitions to compute the confidence intervals (default = 999)}
 }
 \value{
 An S3 object of type "ciccr". The object has the following elements:
 \item{est}{(length)-dimensional vector of the upper bounds on the average of attributable risk}
 \item{se}{(length)-dimensional vector of pointwise standard errors}
-\item{ci}{(length)-dimensional vector of the upper ends of pointwise confidence interval}
+\item{ci}{(length)-dimensional vector of the upper ends of pointwise confidence intervals}
 \item{pseq}{(length)-dimensional vector of a grid from 0 to p_upper}
 }
 \description{
