@@ -41,6 +41,7 @@ An S3 object of type "ciccr". The object has the following elements:
 \item{se}{(length)-dimensional vector of pointwise standard errors}
 \item{ci}{(length)-dimensional vector of the upper ends of pointwise confidence intervals}
 \item{pseq}{(length)-dimensional vector of a grid from 0 to p_upper}
+\item{return_code}{status of existence of missing values in bootstrap replications}
 }
 \description{
 Provides an upper bound on the average of attributable risk.
