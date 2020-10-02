@@ -17,6 +17,7 @@
 #' \item{se}{(length)-dimensional vector of pointwise standard errors}
 #' \item{ci}{(length)-dimensional vector of the upper ends of pointwise confidence intervals}
 #' \item{pseq}{(length)-dimensional vector of a grid from 0 to p_upper}
+#' \item{return_code}{status of existence of missing values in bootstrap replications}
 #'
 #' @examples
 #' # use the ACS dataset included in the package.
@@ -61,12 +62,17 @@ cicc_AR = function(y, t, x, sampling = 'cc', p_upper = 1L, cov_prob = 0.95, leng
   bt_est_matrix = rbind(bt_est_matrix,bt_est)
   }
 
+  if ( sum(is.na(bt_est_matrix)==TRUE) > 0 ){
   bt_est_matrix = stats::na.omit(bt_est_matrix)
+  return_code = "Warning: bootstrap samples with missing values are dropped"
+  } else{
+  return_code = "Success: no bootstrap sample is dropped"
+  }
 
   bt_ci = apply(bt_est_matrix, 2, stats::quantile, prob=cov_prob)
   bt_se = apply(bt_est_matrix, 2, stats::sd)
 
-  outputs = list("est" = est, "se" = bt_se, "ci" = bt_ci, "pseq" = pseq)
+  outputs = list("est" = est, "se" = bt_se, "ci" = bt_ci, "pseq" = pseq, "return_code" = return_code)
 
   class(outputs) = "ciccr"
 
