@@ -61,7 +61,7 @@ cicc_AR = function(y, t, x, sampling = 'cc', p_upper = 1L, cov_prob = 0.95, leng
   bt_est_matrix = rbind(bt_est_matrix,bt_est)
   }
 
-  bt_est_matrix = na.omit(bt_est_matrix)
+  bt_est_matrix = stats::na.omit(bt_est_matrix)
 
   bt_ci = apply(bt_est_matrix, 2, stats::quantile, prob=cov_prob)
   bt_se = apply(bt_est_matrix, 2, stats::sd)
