@@ -4,7 +4,15 @@
 \alias{avg_AR_logit}
 \title{An Average of the Upper Bound of Causal Attributable Risk}
 \usage{
-avg_AR_logit(y, t, x, sampling = "cc", p_upper = 1L, length = 20L)
+avg_AR_logit(
+  y,
+  t,
+  x,
+  sampling = "cc",
+  p_upper = 1L,
+  length = 20L,
+  interaction = FALSE
+)
 }
 \arguments{
 \item{y}{n-dimensional vector of binary outcomes}
@@ -15,9 +23,11 @@ avg_AR_logit(y, t, x, sampling = "cc", p_upper = 1L, length = 20L)
 
 \item{sampling}{'cc' for case-control sampling; 'cp' for case-population sampling (default sampling =  'cc')}
 
-\item{p_upper}{a specified upper bound for the unknown true case probability (default = 1)}
+\item{p_upper}{specified upper bound for the unknown true case probability (default = 1)}
 
 \item{length}{specified length of a sequence from 0 to p_upper (default = 20)}
+
+\item{interaction}{TRUE if there are interaction terms in the retrospective logistic model; FALSE if not (default = FALSE)}
 }
 \value{
 An S3 object of type "ciccr". The object has the following elements.

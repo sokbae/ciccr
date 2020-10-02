@@ -7,8 +7,9 @@
 #' @param t n-dimensional vector of binary treatments
 #' @param x n by p matrix of covariates
 #' @param sampling 'cc' for case-control sampling; 'cp' for case-population sampling (default sampling =  'cc')
-#' @param p_upper a specified upper bound for the unknown true case probability (default = 1)
+#' @param p_upper specified upper bound for the unknown true case probability (default = 1)
 #' @param length specified length of a sequence from 0 to p_upper (default = 20)
+#' @param interaction TRUE if there are interaction terms in the retrospective logistic model; FALSE if not (default = FALSE)
 #'
 #' @return An S3 object of type "ciccr". The object has the following elements.
 #' \item{est}{(length)-dimensional vector of the average of the upper bound of causal attributable risk}
@@ -24,7 +25,7 @@
 #' @references Sung Jae Jun and Sokbae Lee. Causal Inference in Case-Control Studies.
 #' \url{https://arxiv.org/abs/2004.08318}.
 #' @export
-avg_AR_logit = function(y, t, x, sampling = 'cc', p_upper = 1L, length = 20L){
+avg_AR_logit = function(y, t, x, sampling = 'cc', p_upper = 1L, length = 20L, interaction = FALSE){
 
   # Check whether y is either 0 or 1
   if ( sum( !(y %in% c(0,1)) ) > 0 ){
@@ -71,11 +72,25 @@ avg_AR_logit = function(y, t, x, sampling = 'cc', p_upper = 1L, length = 20L){
 
   # Retrospective logistic estimation of P(T=1|Y=y,X=x)
 
-  lm_ret = stats::glm(t~y+x+y:x, family=stats::binomial("logit"))
-  est_ret = stats::coef(lm_ret)
+  if (interaction == TRUE){
 
-  x_reg_y1 = cbind(1,1,x,1*x)
-  x_reg_y0 = cbind(1,0,x,0*x)
+    lm_ret = stats::glm(t~y+x+y:x, family=stats::binomial("logit"))
+    est_ret = stats::coef(lm_ret)
+    x_reg_y1 = cbind(1,1,x,1*x)
+    x_reg_y0 = cbind(1,0,x,0*x)
+
+  } else if (interaction == FALSE){
+
+    lm_ret = stats::glm(t~y+x, family=stats::binomial("logit"))
+    est_ret = stats::coef(lm_ret)
+    x_reg_y1 = cbind(1,1,x)
+    x_reg_y0 = cbind(1,0,x)
+  } else {
+    stop("'interaction' must be either FALSE or TRUE.")
+  }
+
+
+
   fit_ret_y1 = exp(x_reg_y1%*%est_ret)/(1+exp(x_reg_y1%*%est_ret))
   fit_ret_y0 = exp(x_reg_y0%*%est_ret)/(1+exp(x_reg_y0%*%est_ret))
 
@@ -96,19 +111,31 @@ avg_AR_logit = function(y, t, x, sampling = 'cc', p_upper = 1L, length = 20L){
   # Estimation of beta_AR(p,y)
 
   if (sampling=='cc'){
-    term1_cc = P11/(P10 + r_cc*(P11-P10))
-    term2_cc = P01/(P00 + r_cc*(P01-P00))
+
+    term1_cc_den = P10 + r_cc*(P11-P10)
+    term1_cc_den = term1_cc_den + small_e*(term1_cc_den < small_e)
+    term1_cc = P11/term1_cc_den
+
+    term2_cc_den = P00 + r_cc*(P01-P00)
+    term2_cc_den = term2_cc_den + small_e*(term2_cc_den < small_e)
+    term2_cc = P01/term2_cc_den
+
     GammaAR_cc = term1_cc - term2_cc
+
     betaAR_cc1 = colMeans(r_cc*GammaAR_cc*y)/mean(y)
     betaAR_cc0 = colMeans(r_cc*GammaAR_cc*(1-y))/mean(1-y)
     betaAR_cc = pgrd*betaAR_cc1 + (1-pgrd)*betaAR_cc0
     est = betaAR_cc
+
   }  else if (sampling=='cp'){
+
     term1_cp = P11/P10
     term2_cp = P01/P00
+
     GammaAR_cp = term1_cp - term2_cp
     betaAR_cp = colMeans(r_cp*GammaAR_cp*(1-y))/mean(1-y)
     est = betaAR_cp
+
   }
 
   outputs = list("est" = est, "pseq" = pgrd)

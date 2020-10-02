@@ -12,6 +12,7 @@ cicc_AR(
   p_upper = 1L,
   cov_prob = 0.95,
   length = 21L,
+  interaction = FALSE,
   no_boot = 999L
 )
 }
@@ -29,6 +30,8 @@ cicc_AR(
 \item{cov_prob}{parameter for coverage probability of a confidence interval (default = 0.95)}
 
 \item{length}{specified length of a sequence from 0 to p_upper (default = 21)}
+
+\item{interaction}{TRUE if there are interaction terms in the retrospective logistic model; FALSE if not (default = FALSE)}
 
 \item{no_boot}{number of bootstrap repetitions to compute the confidence intervals (default = 999)}
 }
