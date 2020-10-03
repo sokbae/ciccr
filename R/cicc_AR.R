@@ -46,6 +46,8 @@ cicc_AR = function(y, t, x, sampling = 'cc', p_upper = 1L, cov_prob = 0.95, leng
   n = length(y)
   results = avg_AR_logit(y, t, x, sampling=sampling, p_upper=p_upper, length=length, interaction=interaction)
   est = results$est
+  est = est*(est <= 1) + 1*(est > 1) # truncated at 1 since AR cannot be larger than 1
+
   pseq = results$pseq
 
   if (no_boot > 0){
@@ -75,6 +77,7 @@ cicc_AR = function(y, t, x, sampling = 'cc', p_upper = 1L, cov_prob = 0.95, leng
   bt_ci = apply(bt_est_matrix, 2, stats::quantile, prob=cov_prob)
   bt_se = apply(bt_est_matrix, 2, stats::sd)
 
+  bt_ci = bt_ci*(bt_ci <= 1) + 1*(bt_ci > 1) # truncated at 1 since AR cannot be larger than 1
   }
 
   else if (no_boot == 0){

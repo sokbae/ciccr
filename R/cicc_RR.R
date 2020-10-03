@@ -9,6 +9,8 @@
 #' @param p_upper a specified upper bound for the unknown true case probability (default = 1)
 #' @param cov_prob parameter for coverage probability of a confidence interval (default = 0.95)
 #' @param length specified length of a sequence from 0 to p_upper (default = 21)
+#' @param interaction TRUE if there are interaction terms in the retrospective logistic model; FALSE if not (default = FALSE)
+#' @param no_boot number of bootstrap repetitions to compute the confidence intervals (default = 0)
 #'
 #' @return An S3 object of type "ciccr". The object has the following elements:
 #' \item{est}{(length)-dimensional vector of the upper bounds on the average of log relative risk}
@@ -16,6 +18,7 @@
 #' \item{ci}{(length)-dimensional vector of the upper ends of pointwise confidence interval}
 #' \item{pseq}{(length)-dimensional vector of a grid from 0 to p_upper}
 #' \item{cov_prob}{the nominal coverage probability}
+#' \item{return_code}{status of existence of missing values in bootstrap replications}
 #' Notes. The outputs would be the same across different p values for for case-population sampling.
 #'
 #' @examples
@@ -33,7 +36,7 @@
 #' \url{https://arxiv.org/abs/2004.08318}.
 #'
 #' @export
-cicc_RR = function(y, t, x, sampling = 'cc', p_upper = 1L, cov_prob = 0.95, length = 21L){
+cicc_RR = function(y, t, x, sampling = 'cc', p_upper = 1L, cov_prob = 0.95, length = 21L, interaction = FALSE, no_boot = 0L){
 
   # Check whether p_upper is in (0,1]
   if (p_upper <=0L || p_upper > 1L){
@@ -50,32 +53,50 @@ cicc_RR = function(y, t, x, sampling = 'cc', p_upper = 1L, cov_prob = 0.95, leng
     stop("'sampling' must be either 'cc' or 'cp'.")
   }
 
-  results = avg_retro_logit(y,t,x,'case')
-  est_case = results$est
-  se_case = results$se
+  n = length(y)
 
-  results = avg_retro_logit(y,t,x,'control')
-  est_control = results$est
-  se_control = results$se
+  results = avg_RR_logit(y, t, x, sampling=sampling, p_upper=p_upper, length=length, interaction=interaction)
+  est = results$est
+  pseq = results$pseq
 
-  cv_norm = stats::qnorm(cov_prob)
-  pseq = seq(from = 0, to = p_upper, length.out = ceiling(length))
+    if (no_boot > 0){
 
-  if (sampling=='cc'){
+      data = cbind(y,t,x)
+      bt_est_matrix = {}
+      for (k in 1:no_boot){
 
-    xi = est_case*pseq + est_control*(1-pseq)
-    xi_var = (se_case*pseq)^2 + (se_control*(1-pseq))^2
-    xi_se = sqrt(xi_var)
-    xi_ci = xi + cv_norm*xi_se
-  }
-  else if (sampling=='cp'){
+        bt_i = sample.int(n,n,replace=TRUE)
+        bt_data = data[bt_i,]
+        bt_y = bt_data[bt_i,1]
+        bt_t = bt_data[bt_i,2]
+        bt_x = bt_data[bt_i,c(-1,-2)]
 
-    xi = rep(est_control,length(pseq))
-    xi_se = rep(se_control,length(pseq))
-    xi_ci = xi + cv_norm*xi_se
-  }
+        bt_results = avg_RR_logit(bt_y, bt_t, bt_x, sampling=sampling, p_upper=p_upper, length=length, interaction=interaction)
+        bt_est = bt_results$est
 
-  outputs = list("est" = xi, "se" = xi_se, "ci" = xi_ci, "pseq" = pseq, "cov_prob" = cov_prob)
+        bt_est_matrix = rbind(bt_est_matrix,bt_est)
+      }
+
+      if ( sum(is.na(bt_est_matrix)==TRUE) > 0 ){
+        bt_est_matrix = stats::na.omit(bt_est_matrix)
+        return_code = "Warning: bootstrap samples with missing values are dropped"
+      } else{
+        return_code = "Success: no bootstrap sample is dropped"
+      }
+
+      bt_ci = apply(bt_est_matrix, 2, stats::quantile, prob=cov_prob)
+      bt_se = apply(bt_est_matrix, 2, stats::sd)
+
+
+    } else if (no_boot == 0){
+
+        bt_se = NA
+        bt_ci = NA
+        return_code = "Only point estimates are provided without bootstrap inference"
+      }
+
+
+  outputs = list("est" = est, "se" = bt_se, "ci" = bt_ci, "pseq" = pseq, "cov_prob" = cov_prob, "return_code" = return_code)
 
   class(outputs) = "ciccr"
 

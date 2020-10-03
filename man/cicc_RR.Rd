@@ -4,7 +4,17 @@
 \alias{cicc_RR}
 \title{Causal Inference on Relative Risk}
 \usage{
-cicc_RR(y, t, x, sampling = "cc", p_upper = 1L, cov_prob = 0.95, length = 21L)
+cicc_RR(
+  y,
+  t,
+  x,
+  sampling = "cc",
+  p_upper = 1L,
+  cov_prob = 0.95,
+  length = 21L,
+  interaction = FALSE,
+  no_boot = 0L
+)
 }
 \arguments{
 \item{y}{n-dimensional vector of binary outcomes}
@@ -20,6 +30,10 @@ cicc_RR(y, t, x, sampling = "cc", p_upper = 1L, cov_prob = 0.95, length = 21L)
 \item{cov_prob}{parameter for coverage probability of a confidence interval (default = 0.95)}
 
 \item{length}{specified length of a sequence from 0 to p_upper (default = 21)}
+
+\item{interaction}{TRUE if there are interaction terms in the retrospective logistic model; FALSE if not (default = FALSE)}
+
+\item{no_boot}{number of bootstrap repetitions to compute the confidence intervals (default = 0)}
 }
 \value{
 An S3 object of type "ciccr". The object has the following elements:
@@ -28,6 +42,7 @@ An S3 object of type "ciccr". The object has the following elements:
 \item{ci}{(length)-dimensional vector of the upper ends of pointwise confidence interval}
 \item{pseq}{(length)-dimensional vector of a grid from 0 to p_upper}
 \item{cov_prob}{the nominal coverage probability}
+\item{return_code}{status of existence of missing values in bootstrap replications}
 Notes. The outputs would be the same across different p values for for case-population sampling.
 }
 \description{

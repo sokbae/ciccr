@@ -50,9 +50,18 @@ cicc_plot = function(results, parameter = 'RR',
 
   pdf_file_name = paste(file_name,"RR.pdf",sep="-")
   ylab_name = "Relative Risk"
-  ylim_value = c(min(xi),(max(xi_ci)+plots_ctl*(max(xi_ci)-min(xi))))
-  legend_title = c(expression=paste("Estimate of the Upper Bound on Relative Risk"),
-                      paste(cov_prob*100,"% One-Sided Pointwise Confidence Interval",sep=""))
+
+    if (sum(is.na(xi_ci) == TRUE) == 0){
+
+        ylim_value = c(min(xi),(max(xi_ci)+plots_ctl*(max(xi_ci)-min(xi))))
+        legend_title = c(expression=paste("Estimate of the Upper Bound on Relative Risk"),
+                         paste(cov_prob*100,"% One-Sided Pointwise Confidence Interval",sep=""))
+    } else {
+
+        ylim_value = c(min(xi),(1+plots_ctl)*max(xi))
+        legend_title = c(expression=paste("Estimate of the Upper Bound on Relative Risk"))
+
+    }
   }
 
   if (parameter == 'AR'){
@@ -85,8 +94,9 @@ cicc_plot = function(results, parameter = 'RR',
     grDevices::pdf(pdf_file_name)
   }
 
-  graphics::plot(pseq, xi, type = "l", lty = "solid", col = "blue", xlab = xlab_name, ylab = ylab_name,
-       xlim = xlim_value, ylim = ylim_value)
+  graphics::plot(pseq, xi, type = "l", lty = "solid", col = "blue",
+                 xlab = xlab_name, ylab = ylab_name,
+                 xlim = xlim_value, ylim = ylim_value)
 
     if (sum(is.na(xi_ci) == TRUE) == 0){
 

@@ -56,7 +56,7 @@ avg_retro_logit = function(y, t, x, w = 'control'){
 
   # Retrospective logistic estimation
 
-  lm_case = stats::glm(t~y+xcase_demeaned+y*xcase_demeaned, family=stats::binomial("logit"))
+  lm_case = stats::glm(t~y+xcase_demeaned+y:xcase_demeaned, family=stats::binomial("logit"))
   est_all = stats::coef(lm_case)
   est = est_all[2]
   se_all = sqrt(diag(stats::vcov(lm_case)))
