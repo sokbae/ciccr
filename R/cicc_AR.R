@@ -1,4 +1,4 @@
-#' @title Causal Inference for Attributable Risk
+#' @title Causal Inference on Attributable Risk
 #'
 #' @description Provides an upper bound on the average of attributable risk.
 #'
@@ -10,7 +10,7 @@
 #' @param cov_prob parameter for coverage probability of a confidence interval (default = 0.95)
 #' @param length specified length of a sequence from 0 to p_upper (default = 21)
 #' @param interaction TRUE if there are interaction terms in the retrospective logistic model; FALSE if not (default = FALSE)
-#' @param no_boot number of bootstrap repetitions to compute the confidence intervals (default = 999)
+#' @param no_boot number of bootstrap repetitions to compute the confidence intervals (default = 0)
 #'
 #' @return An S3 object of type "ciccr". The object has the following elements:
 #' \item{est}{(length)-dimensional vector of the upper bounds on the average of attributable risk}
@@ -30,7 +30,7 @@
 #' \url{https://arxiv.org/abs/2004.08318}.
 #'
 #' @export
-cicc_AR = function(y, t, x, sampling = 'cc', p_upper = 1L, cov_prob = 0.95, length = 21L, interaction = FALSE, no_boot = 999L){
+cicc_AR = function(y, t, x, sampling = 'cc', p_upper = 1L, cov_prob = 0.95, length = 21L, interaction = FALSE, no_boot = 0L){
 
   # Check whether p_upper is in (0,1]
   if (p_upper <=0L || p_upper > 1L){
@@ -46,6 +46,8 @@ cicc_AR = function(y, t, x, sampling = 'cc', p_upper = 1L, cov_prob = 0.95, leng
   results = avg_AR_logit(y, t, x, sampling=sampling, p_upper=p_upper, length=length, interaction=interaction)
   est = results$est
   pseq = results$pseq
+
+  if (no_boot > 0){
 
   data = cbind(y,t,x)
   bt_est_matrix = {}
@@ -71,6 +73,15 @@ cicc_AR = function(y, t, x, sampling = 'cc', p_upper = 1L, cov_prob = 0.95, leng
 
   bt_ci = apply(bt_est_matrix, 2, stats::quantile, prob=cov_prob)
   bt_se = apply(bt_est_matrix, 2, stats::sd)
+
+  }
+
+  else if (no_boot == 0){
+
+  bt_se = NA
+  bt_ci = NA
+  return_code = "Only point estimates are provided without bootstrap inference"
+  }
 
   outputs = list("est" = est, "se" = bt_se, "ci" = bt_ci, "pseq" = pseq, "return_code" = return_code)
 
