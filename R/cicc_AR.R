@@ -17,6 +17,7 @@
 #' \item{se}{(length)-dimensional vector of pointwise standard errors}
 #' \item{ci}{(length)-dimensional vector of the upper ends of pointwise confidence intervals}
 #' \item{pseq}{(length)-dimensional vector of a grid from 0 to p_upper}
+#' \item{cov_prob}{the nominal coverage probability}
 #' \item{return_code}{status of existence of missing values in bootstrap replications}
 #'
 #' @examples
@@ -83,7 +84,7 @@ cicc_AR = function(y, t, x, sampling = 'cc', p_upper = 1L, cov_prob = 0.95, leng
   return_code = "Only point estimates are provided without bootstrap inference"
   }
 
-  outputs = list("est" = est, "se" = bt_se, "ci" = bt_ci, "pseq" = pseq, "return_code" = return_code)
+  outputs = list("est" = est, "se" = bt_se, "ci" = bt_ci, "pseq" = pseq, "cov_prob" = cov_prob, "return_code" = return_code)
 
   class(outputs) = "ciccr"
 

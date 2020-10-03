@@ -4,7 +4,7 @@
 \alias{cicc_RR}
 \title{Causal Inference on Relative Risk}
 \usage{
-cicc_RR(y, t, x, sampling = "cc", p_upper = 1L, cov_prob = 0.95, length = 20L)
+cicc_RR(y, t, x, sampling = "cc", p_upper = 1L, cov_prob = 0.95, length = 21L)
 }
 \arguments{
 \item{y}{n-dimensional vector of binary outcomes}
@@ -19,7 +19,7 @@ cicc_RR(y, t, x, sampling = "cc", p_upper = 1L, cov_prob = 0.95, length = 20L)
 
 \item{cov_prob}{parameter for coverage probability of a confidence interval (default = 0.95)}
 
-\item{length}{specified length of a sequence from 0 to p_upper (default = 20)}
+\item{length}{specified length of a sequence from 0 to p_upper (default = 21)}
 }
 \value{
 An S3 object of type "ciccr". The object has the following elements:
@@ -27,6 +27,7 @@ An S3 object of type "ciccr". The object has the following elements:
 \item{se}{(length)-dimensional vector of pointwise standard errors}
 \item{ci}{(length)-dimensional vector of the upper ends of pointwise confidence interval}
 \item{pseq}{(length)-dimensional vector of a grid from 0 to p_upper}
+\item{cov_prob}{the nominal coverage probability}
 Notes. The outputs would be the same across different p values for for case-population sampling.
 }
 \description{

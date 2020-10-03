@@ -8,13 +8,14 @@
 #' @param sampling 'cc' for case-control sampling; 'cp' for case-population sampling (default sampling =  'cc')
 #' @param p_upper a specified upper bound for the unknown true case probability (default = 1)
 #' @param cov_prob parameter for coverage probability of a confidence interval (default = 0.95)
-#' @param length specified length of a sequence from 0 to p_upper (default = 20)
+#' @param length specified length of a sequence from 0 to p_upper (default = 21)
 #'
 #' @return An S3 object of type "ciccr". The object has the following elements:
 #' \item{est}{(length)-dimensional vector of the upper bounds on the average of log relative risk}
 #' \item{se}{(length)-dimensional vector of pointwise standard errors}
 #' \item{ci}{(length)-dimensional vector of the upper ends of pointwise confidence interval}
 #' \item{pseq}{(length)-dimensional vector of a grid from 0 to p_upper}
+#' \item{cov_prob}{the nominal coverage probability}
 #' Notes. The outputs would be the same across different p values for for case-population sampling.
 #'
 #' @examples
@@ -32,7 +33,7 @@
 #' \url{https://arxiv.org/abs/2004.08318}.
 #'
 #' @export
-cicc_RR = function(y, t, x, sampling = 'cc', p_upper = 1L, cov_prob = 0.95, length = 20L){
+cicc_RR = function(y, t, x, sampling = 'cc', p_upper = 1L, cov_prob = 0.95, length = 21L){
 
   # Check whether p_upper is in (0,1]
   if (p_upper <=0L || p_upper > 1L){
@@ -74,7 +75,7 @@ cicc_RR = function(y, t, x, sampling = 'cc', p_upper = 1L, cov_prob = 0.95, leng
     xi_ci = xi + cv_norm*xi_se
   }
 
-  outputs = list("est" = xi, "se" = xi_se, "ci" = xi_ci, "pseq" = pseq)
+  outputs = list("est" = xi, "se" = xi_se, "ci" = xi_ci, "pseq" = pseq, "cov_prob" = cov_prob)
 
   class(outputs) = "ciccr"
 

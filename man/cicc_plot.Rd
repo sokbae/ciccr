@@ -2,18 +2,11 @@
 % Please edit documentation in R/cicc_plot.R
 \name{cicc_plot}
 \alias{cicc_plot}
-\title{Upper Bounds on Relative Risk and Attributable Risk}
+\title{Plotting Upper Bounds on Relative Risk and Attributable Risk}
 \usage{
 cicc_plot(
-  y,
-  t,
-  x,
-  sampling = "cc",
-  p_upper = 1L,
-  cov_prob = 0.95,
-  length = 20L,
-  interaction = FALSE,
-  no_boot = 0L,
+  results,
+  parameter = "RR",
   save_plots = FALSE,
   file_name = Sys.Date(),
   plots_ctl = 0.3,
@@ -21,25 +14,9 @@ cicc_plot(
 )
 }
 \arguments{
-\item{y}{n-dimensional vector of binary outcomes}
+\item{results}{estimation results from either cicc_RR() or cicc_AR}
 
-\item{t}{n-dimensional vector of binary treatments}
-
-\item{x}{n by p matrix of covariates}
-
-\item{sampling}{'cc' for case-control sampling; 'cp' for case-population sampling (default sampling =  'cc')}
-
-\item{p_upper}{a specified upper bound for the unknown true case probability (default = 1; relevant for only 'cc')}
-
-\item{cov_prob}{parameter for coverage probability of a confidence interval (default = 0.95)}
-
-\item{length}{specified length of a sequence from 0 to p_upper (default = 20; ; relevant for only 'cc')}
-
-\item{interaction}{TRUE if there are interaction terms in the retrospective logistic model
-to estimate the upper bound on attributable risk; FALSE if not (default = FALSE)}
-
-\item{no_boot}{number of bootstrap repetitions to compute the confidence intervals
-for attributable risk (default = 0)}
+\item{parameter}{'RR' for relative risk; 'AR' for attributable risk (default =  'RR')}
 
 \item{save_plots}{TRUE if the plots are saved as pdf files; FALSE if not (default = FALSE)}
 
@@ -63,7 +40,8 @@ Plots upper bounds on relative risk and attributable risk
   y = ciccr::ACS$topincome
   t = ciccr::ACS$baplus
   x = ciccr::ACS$age
-  cicc_plot(y, t, x)
+  results = cicc_RR(y, t, x)
+  cicc_plot(results)
 
 }
 \references{
