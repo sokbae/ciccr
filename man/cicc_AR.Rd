@@ -38,8 +38,7 @@ cicc_AR(
 \value{
 An S3 object of type "ciccr". The object has the following elements:
 \item{est}{(length)-dimensional vector of the upper bounds on the average of attributable risk}
-\item{se}{(length)-dimensional vector of pointwise standard errors}
-\item{ci}{(length)-dimensional vector of the upper ends of pointwise confidence intervals}
+\item{ci}{(length)-dimensional vector of the upper ends of pointwise one-sided confidence intervals}
 \item{pseq}{(length)-dimensional vector of a grid from 0 to p_upper}
 \item{cov_prob}{the nominal coverage probability}
 \item{return_code}{status of existence of missing values in bootstrap replications}

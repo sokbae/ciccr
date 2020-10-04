@@ -11,7 +11,8 @@ avg_RR_logit(
   sampling = "cc",
   p_upper = 1L,
   length = 20L,
-  interaction = FALSE
+  interaction = FALSE,
+  small_e = 1e-08
 )
 }
 \arguments{
@@ -28,6 +29,9 @@ avg_RR_logit(
 \item{length}{specified length of a sequence from 0 to p_upper (default = 20)}
 
 \item{interaction}{TRUE if there are interaction terms in the retrospective logistic model; FALSE if not (default = FALSE)}
+
+\item{small_e}{a small positive constant to ensure that the fitted probability is bounded between small_e and 1-small_e
+(default small_e = 1e-8)}
 }
 \value{
 An S3 object of type "ciccr". The object has the following elements.

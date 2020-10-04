@@ -14,8 +14,7 @@
 #'
 #' @return An S3 object of type "ciccr". The object has the following elements:
 #' \item{est}{(length)-dimensional vector of the upper bounds on the average of log relative risk}
-#' \item{se}{(length)-dimensional vector of pointwise standard errors}
-#' \item{ci}{(length)-dimensional vector of the upper ends of pointwise confidence interval}
+#' \item{ci}{(length)-dimensional vector of the upper ends of pointwise one-sided confidence intervals}
 #' \item{pseq}{(length)-dimensional vector of a grid from 0 to p_upper}
 #' \item{cov_prob}{the nominal coverage probability}
 #' \item{return_code}{status of existence of missing values in bootstrap replications}
@@ -61,8 +60,9 @@ cicc_RR = function(y, t, x, sampling = 'cc', p_upper = 1L, cov_prob = 0.95, leng
 
     if (no_boot > 0){
 
-      data = cbind(y,t,x)
-      bt_est_matrix = {}
+       data = cbind(y,t,x)
+       bt_est_matrix = {}
+
       for (k in 1:no_boot){
 
         bt_i = sample.int(n,n,replace=TRUE)
@@ -79,24 +79,26 @@ cicc_RR = function(y, t, x, sampling = 'cc', p_upper = 1L, cov_prob = 0.95, leng
 
       if ( sum(is.na(bt_est_matrix)==TRUE) > 0 ){
         bt_est_matrix = stats::na.omit(bt_est_matrix)
-        return_code = "Warning: bootstrap samples with missing values are dropped"
+        dropout_rate = round(100*(1 - nrow(bt_est_matrix)/no_boot))
+        return_code = paste("Warning: ", dropout_rate, "% of bootstrap samples with missing values are dropped", sep="")
       } else{
         return_code = "Success: no bootstrap sample is dropped"
       }
 
-      bt_ci = apply(bt_est_matrix, 2, stats::quantile, prob=cov_prob)
-      bt_se = apply(bt_est_matrix, 2, stats::sd)
-
+      tmp = (bt_est_matrix <= matrix(1,nrow=nrow(bt_est_matrix),ncol=1)%*%matrix(est,nrow=1))
+      pstar = apply(tmp, 2, mean)
+      zstar = stats::qnorm(mean(pstar))
+      bc_prob = stats::pnorm(cov_prob + 2*zstar)
+      bt_ci = apply(bt_est_matrix, 2, stats::quantile, prob=bc_prob) # bias-corrected percentile method
 
     } else if (no_boot == 0){
 
-        bt_se = NA
         bt_ci = NA
         return_code = "Only point estimates are provided without bootstrap inference"
       }
 
 
-  outputs = list("est" = est, "se" = bt_se, "ci" = bt_ci, "pseq" = pseq, "cov_prob" = cov_prob, "return_code" = return_code)
+  outputs = list("est" = est, "ci" = bt_ci, "pseq" = pseq, "cov_prob" = cov_prob, "return_code" = return_code)
 
   class(outputs) = "ciccr"
 

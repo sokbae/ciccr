@@ -10,6 +10,8 @@
 #' @param p_upper specified upper bound for the unknown true case probability (default = 1)
 #' @param length specified length of a sequence from 0 to p_upper (default = 20)
 #' @param interaction TRUE if there are interaction terms in the retrospective logistic model; FALSE if not (default = FALSE)
+#' @param small_e a small positive constant to ensure that the fitted probability is bounded between small_e and 1-small_e
+#' (default small_e = 1e-8)
 #'
 #' @return An S3 object of type "ciccr". The object has the following elements.
 #' \item{est}{(length)-dimensional vector of the average of the upper bound of causal attributable risk}
@@ -25,7 +27,7 @@
 #' @references Sung Jae Jun and Sokbae Lee. Causal Inference in Case-Control Studies.
 #' \url{https://arxiv.org/abs/2004.08318}.
 #' @export
-avg_RR_logit = function(y, t, x, sampling = 'cc', p_upper = 1L, length = 20L, interaction = FALSE){
+avg_RR_logit = function(y, t, x, sampling = 'cc', p_upper = 1L, length = 20L, interaction = FALSE, small_e = 1e-8){
 
   # Check whether y is either 0 or 1
   if ( sum( !(y %in% c(0,1)) ) > 0 ){
@@ -45,7 +47,7 @@ avg_RR_logit = function(y, t, x, sampling = 'cc', p_upper = 1L, length = 20L, in
   # Retrospective logistic estimation of P(T=1|Y=y,X=x)
 
   pgrd = seq(from = 0, to = p_upper, length.out = ceiling(length))
-  small_e = 1e-8
+
 
   if (interaction == TRUE){
 
@@ -67,8 +69,10 @@ avg_RR_logit = function(y, t, x, sampling = 'cc', p_upper = 1L, length = 20L, in
   fit_ret_y1 = exp(x_reg_y1%*%est_ret)/(1+exp(x_reg_y1%*%est_ret))
   fit_ret_y0 = exp(x_reg_y0%*%est_ret)/(1+exp(x_reg_y0%*%est_ret))
 
-  fit_ret_y1 = fit_ret_y1 + small_e*(fit_ret_y1 < small_e) + (1-small_e)*(fit_ret_y1 > (1-small_e))
-  fit_ret_y0 = fit_ret_y0 + small_e*(fit_ret_y0 < small_e) + (1-small_e)*(fit_ret_y0 > (1-small_e))
+  fit_ret_y1 = fit_ret_y1*(fit_ret_y1 >= small_e)*(fit_ret_y1 <= (1-small_e))
+             + small_e*(fit_ret_y1 < small_e) + (1-small_e)*(fit_ret_y1 > (1-small_e))
+  fit_ret_y0 = fit_ret_y0*(fit_ret_y0 >= small_e)*(fit_ret_y0 <= (1-small_e))
+             + small_e*(fit_ret_y0 < small_e) + (1-small_e)*(fit_ret_y0 > (1-small_e))
 
   # Estimation of the odds ratio
 
@@ -77,7 +81,11 @@ avg_RR_logit = function(y, t, x, sampling = 'cc', p_upper = 1L, length = 20L, in
   P01 = 1 - P11
   P00 = 1 - P10
 
-  OR = (P11*P00)/(P10*P01)
+  OR_num = P11*P00
+  OR_den = P10*P01
+  OR_num = OR_num*(OR_num >= small_e) + small_e*(OR_num < small_e)
+  OR_den = OR_den*(OR_den >= small_e) + small_e*(OR_den < small_e)
+  OR = OR_num/OR_den
   logOR = log(OR)
 
   # Estimation of the upper bounds
