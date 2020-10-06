@@ -4,6 +4,7 @@
 #'
 #' @param results estimation results from either cicc_RR() or cicc_AR
 #' @param parameter 'RR' for relative risk; 'AR' for attributable risk (default =  'RR')
+#' @param sampling 'cc' for case-control sampling; 'cp' for case-population sampling (default sampling =  'cc')
 #' @param save_plots TRUE if the plots are saved as pdf files; FALSE if not (default = FALSE)
 #' @param file_name the pdf file name to save the plots (default = Sys.Date())
 #' @param plots_ctl value to determine the topleft position of the legend in the figure
@@ -26,7 +27,7 @@
 #' \url{https://arxiv.org/abs/2004.08318}.
 #'
 #' @export
-cicc_plot = function(results, parameter = 'RR',
+cicc_plot = function(results, parameter = 'RR', sampling = 'cc',
                      save_plots = FALSE, file_name = Sys.Date(), plots_ctl = 0.3,
                      plots_dir = FALSE){
 
@@ -54,12 +55,12 @@ cicc_plot = function(results, parameter = 'RR',
     if (sum(is.na(xi_ci) == TRUE) == 0){
 
         ylim_value = c(min(xi),(max(xi_ci)+plots_ctl*(max(xi_ci)-min(xi))))
-        legend_title = c(expression=paste("Estimate of the Upper Bound on Relative Risk"),
-                         paste(cov_prob*100,"% One-Sided Pointwise Confidence Interval",sep=""))
+        legend_title = c(expression=paste("Estimates of the Upper Bounds on Relative Risk"),
+                         paste(cov_prob*100,"% One-Sided Uniform Confidence Band",sep=""))
     } else {
 
         ylim_value = c(min(xi),(1+plots_ctl)*max(xi))
-        legend_title = c(expression=paste("Estimate of the Upper Bound on Relative Risk"))
+        legend_title = c(expression=paste("Estimates of the Upper Bounds on Relative Risk"))
 
     }
   }
@@ -74,18 +75,35 @@ cicc_plot = function(results, parameter = 'RR',
   pdf_file_name = paste(file_name,"AR.pdf",sep="-")
   ylab_name = "Attributable Risk"
 
-    if (sum(is.na(xi_ci) == TRUE) == 0){
+  if (sampling=='cc'){
 
-      ylim_value = c(min(xi),(max(xi_ci)+plots_ctl*(max(xi_ci)-min(xi))))
-      legend_title = c(expression=paste("Estimate of the Upper Bound on Attributable Risk"),
-                        paste(cov_prob*100,"% One-Sided Pointwise Confidence Interval",sep=""))
-    } else {
+      if (sum(is.na(xi_ci) == TRUE) == 0){
 
-      ylim_value = c(min(xi),(1+plots_ctl)*max(xi))
-      legend_title = c(expression=paste("Estimate of the Upper Bound on Attributable Risk"))
+        ylim_value = c(min(xi),(max(xi_ci)+plots_ctl*(max(xi_ci)-min(xi))))
+        legend_title = c(expression=paste("Estimates of the Upper Bounds on Attributable Risk"),
+                          paste(cov_prob*100,"% One-Sided Pointwise Confidence Interval",sep=""))
+      } else {
 
-    }
+        ylim_value = c(min(xi),(1+plots_ctl)*max(xi))
+        legend_title = c(expression=paste("Estimates of the Upper Bounds on Attributable Risk"))
+      }
+
+  } else if (sampling=='cp'){
+
+      if (sum(is.na(xi_ci) == TRUE) == 0){
+
+        ylim_value = c(min(xi),(max(xi_ci)+plots_ctl*(max(xi_ci)-min(xi))))
+        legend_title = c(expression=paste("Estimates of the Upper Bounds on Attributable Risk"),
+                         paste(cov_prob*100,"% One-Sided Uniform Confidence Band",sep=""))
+      } else {
+
+        ylim_value = c(min(xi),(1+plots_ctl)*max(xi))
+        legend_title = c(expression=paste("Estimates of the Upper Bounds on Attributable Risk"))
+      }
+
   }
+
+}
 
   xlab_name = "Unknown True Case Probability"
   xlim_value = c(0,max(pseq))

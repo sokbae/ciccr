@@ -7,6 +7,7 @@
 cicc_plot(
   results,
   parameter = "RR",
+  sampling = "cc",
   save_plots = FALSE,
   file_name = Sys.Date(),
   plots_ctl = 0.3,
@@ -17,6 +18,8 @@ cicc_plot(
 \item{results}{estimation results from either cicc_RR() or cicc_AR}
 
 \item{parameter}{'RR' for relative risk; 'AR' for attributable risk (default =  'RR')}
+
+\item{sampling}{'cc' for case-control sampling; 'cp' for case-population sampling (default sampling =  'cc')}
 
 \item{save_plots}{TRUE if the plots are saved as pdf files; FALSE if not (default = FALSE)}
 
