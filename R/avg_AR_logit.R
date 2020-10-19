@@ -1,31 +1,36 @@
-#' @title An Average of the Upper Bound of Causal Attributable Risk
+#' @title An Average of the Upper Bound on Causal Attributable Risk
 #'
-#' @description Averages the upper bound of causal attributable risk using logistic regression models
+#' @description Averages the upper bound on causal attributable risk using prospective and retrospective logistic regression models
 #' under the monotone treatment response (MTR) and monotone treatment selection (MTS) assumptions.
 #'
 #' @param y n-dimensional vector of binary outcomes
 #' @param t n-dimensional vector of binary treatments
-#' @param x n by p matrix of covariates
-#' @param sampling 'cc' for case-control sampling; 'cp' for case-population sampling (default sampling =  'cc')
+#' @param x n by d matrix of covariates
+#' @param sampling 'cc' for case-control sampling; 'cp' for case-population sampling (default =  'cc')
 #' @param p_upper specified upper bound for the unknown true case probability (default = 1)
 #' @param length specified length of a sequence from 0 to p_upper (default = 20)
-#' @param interaction TRUE if there are interaction terms in the retrospective logistic model; FALSE if not (default = FALSE)
+#' @param interaction TRUE if there are interaction terms in the retrospective logistic model; FALSE if not (default = TRUE)
 #'
 #' @return An S3 object of type "ciccr". The object has the following elements.
 #' \item{est}{(length)-dimensional vector of the average of the upper bound of causal attributable risk}
 #' \item{pseq}{(length)-dimensional vector of a grid from 0 to p_upper}
 #'
 #' @examples
-#' # use the ACS dataset included in the package
-#'   y = ciccr::ACS$topincome
-#'   t = ciccr::ACS$baplus
-#'   x = ciccr::ACS$age
+#' # use the ACS_CC dataset included in the package.
+#'   y = ciccr::ACS_CC$topincome
+#'   t = ciccr::ACS_CC$baplus
+#'   x = ciccr::ACS_CC$age
 #'   results = avg_AR_logit(y, t, x, sampling = 'cc')
 #'
-#' @references Sung Jae Jun and Sokbae Lee. Causal Inference in Case-Control Studies.
+#' @references Jun, S.J. and Lee, S. (2020). Causal Inference in Case-Control Studies.
 #' \url{https://arxiv.org/abs/2004.08318}.
+#' @references Manski, C.F. (1997). Monotone Treatment Response.
+#' Econometrica, 65(6), 1311-1334.
+#' @references Manski, C.F. and Pepper, J.V. (2000). Monotone Instrumental Variables: With an Application to the Returns to Schooling.
+#' Econometrica, 68(4), 997-1010.
+#'
 #' @export
-avg_AR_logit = function(y, t, x, sampling = 'cc', p_upper = 1L, length = 20L, interaction = FALSE){
+avg_AR_logit = function(y, t, x, sampling = 'cc', p_upper = 1L, length = 20L, interaction = TRUE){
 
   # Check whether y is either 0 or 1
   if ( sum( !(y %in% c(0,1)) ) > 0 ){
@@ -89,14 +94,11 @@ avg_AR_logit = function(y, t, x, sampling = 'cc', p_upper = 1L, length = 20L, in
     stop("'interaction' must be either FALSE or TRUE.")
   }
 
-
-
   fit_ret_y1 = exp(x_reg_y1%*%est_ret)/(1+exp(x_reg_y1%*%est_ret))
   fit_ret_y0 = exp(x_reg_y0%*%est_ret)/(1+exp(x_reg_y0%*%est_ret))
 
   fit_ret_y1 = fit_ret_y1 + small_e*(fit_ret_y1 < small_e) + (1-small_e)*(fit_ret_y1 > (1-small_e))
   fit_ret_y0 = fit_ret_y0 + small_e*(fit_ret_y0 < small_e) + (1-small_e)*(fit_ret_y0 > (1-small_e))
-
 
   # Estimation of Gamma_AR(x,p)
 

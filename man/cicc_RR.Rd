@@ -4,62 +4,45 @@
 \alias{cicc_RR}
 \title{Causal Inference on Relative Risk}
 \usage{
-cicc_RR(
-  y,
-  t,
-  x,
-  sampling = "cc",
-  p_upper = 1L,
-  cov_prob = 0.95,
-  length = 21L,
-  interaction = FALSE,
-  no_boot = 0L
-)
+cicc_RR(y, t, x, sampling = "cc", cov_prob = 0.95)
 }
 \arguments{
 \item{y}{n-dimensional vector of binary outcomes}
 
 \item{t}{n-dimensional vector of binary treatments}
 
-\item{x}{n by p matrix of covariates}
+\item{x}{n by d matrix of covariates}
 
-\item{sampling}{'cc' for case-control sampling; 'cp' for case-population sampling (default sampling =  'cc')}
+\item{sampling}{'cc' for case-control sampling; 'cp' for case-population sampling (default =  'cc')}
 
-\item{p_upper}{a specified upper bound for the unknown true case probability (default = 1)}
-
-\item{cov_prob}{parameter for coverage probability of a confidence interval (default = 0.95)}
-
-\item{length}{specified length of a sequence from 0 to p_upper (default = 21)}
-
-\item{interaction}{TRUE if there are interaction terms in the retrospective logistic model; FALSE if not (default = FALSE)}
-
-\item{no_boot}{number of bootstrap repetitions to compute the confidence intervals (default = 0)}
+\item{cov_prob}{coverage probability of a uniform confidence band (default = 0.95)}
 }
 \value{
 An S3 object of type "ciccr". The object has the following elements:
-\item{est}{(length)-dimensional vector of the upper bounds on the average of log relative risk}
-\item{ci}{(length)-dimensional vector of the upper ends of pointwise one-sided confidence intervals}
-\item{pseq}{(length)-dimensional vector of a grid from 0 to p_upper}
-\item{cov_prob}{the nominal coverage probability}
-\item{return_code}{status of existence of missing values in bootstrap replications}
-Notes. The outputs would be the same across different p values for for case-population sampling.
+\item{est}{estimates of the upper bounds on the average of log relative risk at p=0 and p=1}
+\item{se}{pointwise standard errors at p=0 and p=1}
+\item{ci}{the upper end points of the uniform confidence band at p=0 and p=1}
+\item{pseq}{two end points: p=0 and p=1}
 }
 \description{
-Provides an upper bound on the average of log relative risk.
+Provides upper bounds on the average of log relative risk
+under the monotone treatment response (MTR) and monotone treatment selection (MTS) assumptions.
 }
 \examples{
-# use the ACS dataset included in the package.
-  y = ciccr::ACS$topincome
-  t = ciccr::ACS$baplus
-  x = ciccr::ACS$age
-# The upper bound for Pr(y=1) is set as p_upper = 1 by default
-# with the defaulty coverage probability of 0.95 for the default choice of case-control sampling.
-  cicc_RR(y, t, x)
-# The upper bound for Pr(y=1) is set as p_upper = 0.2
-# with the coverage probablity of 0.99 for the case-control sample.
-  cicc_RR(y, t, x, sampling = 'cc', p_upper = 0.2, cov_prob = 0.99)
+# use the ACS_CC dataset included in the package.
+  y = ciccr::ACS_CC$topincome
+  t = ciccr::ACS_CC$baplus
+  x = ciccr::ACS_CC$age
+  results_RR = cicc_RR(y, t, x, sampling = 'cc', cov_prob = 0.95)
+
 }
 \references{
-Sung Jae Jun and Sokbae Lee. Causal Inference in Case-Control Studies.
+Jun, S.J. and Lee, S. (2020). Causal Inference in Case-Control Studies.
 \url{https://arxiv.org/abs/2004.08318}.
+
+Manski, C.F. (1997). Monotone Treatment Response.
+Econometrica, 65(6), 1311-1334.
+
+Manski, C.F. and Pepper, J.V. (2000). Monotone Instrumental Variables: With an Application to the Returns to Schooling.
+Econometrica, 68(4), 997-1010.
 }

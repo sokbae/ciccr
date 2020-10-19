@@ -3,24 +3,32 @@
 \docType{package}
 \name{ciccr}
 \alias{ciccr}
-\title{ciccr: a package for causal inference in case-control studies}
+\title{ciccr: a package for causal inference in case-control and case-population studies}
 \description{
-The ciccr package provides methods for causal infernce in case-control studies.
+The ciccr package provides methods for causal infernce in case-control and case-population studies
+under the monotone treatment response (MTR) and monotone treatment selection (MTS) assumptions.
 }
 \section{Functions}{
 
 The package includes the following:
 \itemize{
-\item{\code{\link{cicc_plot}}: }{plots upper bounds on relative risk and attributable risk.}
+\item{\code{\link{cicc_plot}}: }{plots upper bounds on relative and attributable risk.}
 \item{\code{\link{cicc_RR}}: }{carries out causual inference on relative risk.}
-\item{\code{\link{avg_retro_logit}}: }{averages the log odds ratio using retrospective logistic regression.}
+\item{\code{\link{avg_RR_logit}}: }{averages the log odds ratio using retrospective logistic regression.}
 \item{\code{\link{cicc_AR}}: }{carries out causual inference on attributable risk.}
-\item{\code{\link{avg_AR_logit}}: }{averages the upper bound of causal attributable risk using logistic regression models.}
-\item{\code{\link{ACS}}: }{provides an illustrative case-control sample.}
+\item{\code{\link{avg_AR_logit}}: }{averages the upper bound on causal attributable risk using prospective and retrospective logistic regression models.}
+\item{\code{\link{ACS_CC}}: }{provides an illustrative case-control sample.}
+\item{\code{\link{ACS_CP}}: }{provides an illustrative case-population sample.}
 }
 }
 
 \references{
-Sung Jae Jun and Sokbae Lee. Causal Inference in Case-Control Studies.
+Jun, S.J. and Lee, S. (2020). Causal Inference in Case-Control Studies.
 \url{https://arxiv.org/abs/2004.08318}.
+
+Manski, C.F. (1997). Monotone Treatment Response.
+Econometrica, 65(6), 1311-1334.
+
+Manski, C.F. and Pepper, J.V. (2000). Monotone Instrumental Variables: With an Application to the Returns to Schooling.
+Econometrica, 68(4), 997-1010.
 }

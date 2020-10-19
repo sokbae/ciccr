@@ -12,7 +12,7 @@ cicc_AR(
   p_upper = 1L,
   cov_prob = 0.95,
   length = 21L,
-  interaction = FALSE,
+  interaction = TRUE,
   no_boot = 0L
 )
 }
@@ -21,17 +21,17 @@ cicc_AR(
 
 \item{t}{n-dimensional vector of binary treatments}
 
-\item{x}{n by p matrix of covariates}
+\item{x}{n by d matrix of covariates}
 
-\item{sampling}{'cc' for case-control sampling; 'cp' for case-population sampling (default sampling =  'cc')}
+\item{sampling}{'cc' for case-control sampling; 'cp' for case-population sampling (default =  'cc')}
 
 \item{p_upper}{a specified upper bound for the unknown true case probability (default = 1)}
 
-\item{cov_prob}{parameter for coverage probability of a confidence interval (default = 0.95)}
+\item{cov_prob}{coverage probability of a confidence interval (default = 0.95)}
 
 \item{length}{specified length of a sequence from 0 to p_upper (default = 21)}
 
-\item{interaction}{TRUE if there are interaction terms in the retrospective logistic model; FALSE if not (default = FALSE)}
+\item{interaction}{TRUE if there are interaction terms in the retrospective logistic model; FALSE if not (default = TRUE)}
 
 \item{no_boot}{number of bootstrap repetitions to compute the confidence intervals (default = 0)}
 }
@@ -44,17 +44,24 @@ An S3 object of type "ciccr". The object has the following elements:
 \item{return_code}{status of existence of missing values in bootstrap replications}
 }
 \description{
-Provides an upper bound on the average of attributable risk.
+Provides an upper bound on the average of attributable risk
+under the monotone treatment response (MTR) and monotone treatment selection (MTS) assumptions.
 }
 \examples{
-# use the ACS dataset included in the package.
-  y = ciccr::ACS$topincome
-  t = ciccr::ACS$baplus
-  x = ciccr::ACS$age
-  AR = cicc_AR(y, t, x, sampling = 'cc', no_boot = 100)
+# use the ACS_CC dataset included in the package.
+  y = ciccr::ACS_CC$topincome
+  t = ciccr::ACS_CC$baplus
+  x = ciccr::ACS_CC$age
+  results_AR = cicc_AR(y, t, x, sampling = 'cc', no_boot = 100)
 
 }
 \references{
-Sung Jae Jun and Sokbae Lee. Causal Inference in Case-Control Studies.
+Jun, S.J. and Lee, S. (2020). Causal Inference in Case-Control Studies.
 \url{https://arxiv.org/abs/2004.08318}.
+
+Manski, C.F. (1997). Monotone Treatment Response.
+Econometrica, 65(6), 1311-1334.
+
+Manski, C.F. and Pepper, J.V. (2000). Monotone Instrumental Variables: With an Application to the Returns to Schooling.
+Econometrica, 68(4), 997-1010.
 }

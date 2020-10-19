@@ -1,33 +1,38 @@
-#' @title An Average of the Upper Bound of Causal Log Relative Risk
+#' @title An Average of the Log Odds Ratio
 #'
-#' @description Averages the upper bound of causal log relative risk using logistic regression models
-#' under the monotone treatment response (MTR) and monotone treatment selection (MTS) assumptions.
+#' @description Averages the log odds ratio using retrospective logistic regression.
 #'
 #' @param y n-dimensional vector of binary outcomes
 #' @param t n-dimensional vector of binary treatments
-#' @param x n by p matrix of covariates
-#' @param sampling 'cc' for case-control sampling; 'cp' for case-population sampling (default sampling =  'cc')
-#' @param p_upper specified upper bound for the unknown true case probability (default = 1)
-#' @param length specified length of a sequence from 0 to p_upper (default = 20)
-#' @param interaction TRUE if there are interaction terms in the retrospective logistic model; FALSE if not (default = FALSE)
-#' @param small_e a small positive constant to ensure that the fitted probability is bounded between small_e and 1-small_e
-#' (default small_e = 1e-8)
-#'
+#' @param x n by d matrix of covariates
+#' @param w 'case' if the average is conditional on the case sample; 'control' if it is conditional on the control sample
+#' default w =  'control'
 #' @return An S3 object of type "ciccr". The object has the following elements.
-#' \item{est}{(length)-dimensional vector of the average of the upper bound of causal attributable risk}
-#' \item{pseq}{(length)-dimensional vector of a grid from 0 to p_upper}
+#' \item{est}{a scalar estimate of the weighted average of the log odds ratio using retrospective logistic regression}
+#' \item{se}{standard error}
 #'
 #' @examples
-#' # use the ACS dataset included in the package
-#'   y = ciccr::ACS$topincome
-#'   t = ciccr::ACS$baplus
-#'   x = ciccr::ACS$age
-#'   results = avg_RR_logit(y, t, x, sampling = 'cc')
+#' # use the ACS_CC dataset included in the package
+#'   y = ciccr::ACS_CC$topincome
+#'   t = ciccr::ACS_CC$baplus
+#'   x = ciccr::ACS_CC$age
+#' # use 'case' to condition on the distribution of covariates given y = 1
+#'   results = avg_RR_logit(y, t, x, 'case')
 #'
-#' @references Sung Jae Jun and Sokbae Lee. Causal Inference in Case-Control Studies.
+#' @references Jun, S.J. and Lee, S. (2020). Causal Inference in Case-Control Studies.
 #' \url{https://arxiv.org/abs/2004.08318}.
 #' @export
-avg_RR_logit = function(y, t, x, sampling = 'cc', p_upper = 1L, length = 20L, interaction = FALSE, small_e = 1e-8){
+avg_RR_logit = function(y, t, x, w = 'control'){
+
+  # Choice of the conditional distribution of covariates
+  if (w=='case'){
+    yselected = 1L
+  }  else if (w=='control'){
+    yselected = 0L
+  }
+  else {
+    stop("'w' must be either 'case' or 'control'.")
+  }
 
   # Check whether y is either 0 or 1
   if ( sum( !(y %in% c(0,1)) ) > 0 ){
@@ -39,77 +44,25 @@ avg_RR_logit = function(y, t, x, sampling = 'cc', p_upper = 1L, length = 20L, in
     stop("Each element of 't' must be either 0 or 1.")
   }
 
-  # Check whether sampling is either case-control or case-population
-  if ( sum( !(sampling %in% c('cc','cp')) ) > 0 ){
-    stop("'sampling' must be either 'cc' or 'cp'.")
+  # Demeaning for x
+  if (ncol(as.matrix(x)) == 1L){
+    xcase = x[y==yselected]
+    xcase_demeaned = x - mean(xcase)
+  }    else {
+    xcase = x[y==yselected,]
+    xcase_demeaned = x - t(matrix(colMeans(xcase),nrow=ncol(x),ncol=nrow(x)))
   }
 
-  # Retrospective logistic estimation of P(T=1|Y=y,X=x)
+  # Retrospective logistic estimation
 
-  pgrd = seq(from = 0, to = p_upper, length.out = ceiling(length))
+  lm_case = stats::glm(t~y+xcase_demeaned+y:xcase_demeaned, family=stats::binomial("logit"))
+  est_all = stats::coef(lm_case)
+  est = est_all[2]
+  se_all = sqrt(diag(stats::vcov(lm_case)))
+  se = se_all[2]
 
+  outputs = list("est"=est,"se"=se)
+  class(outputs) = 'ciccr'
 
-  if (interaction == TRUE){
-
-    lm_ret = stats::glm(t~y+x+y:x, family=stats::binomial("logit"))
-    est_ret = stats::coef(lm_ret)
-    x_reg_y1 = cbind(1,1,x,1*x)
-    x_reg_y0 = cbind(1,0,x,0*x)
-
-  } else if (interaction == FALSE){
-
-    lm_ret = stats::glm(t~y+x, family=stats::binomial("logit"))
-    est_ret = stats::coef(lm_ret)
-    x_reg_y1 = cbind(1,1,x)
-    x_reg_y0 = cbind(1,0,x)
-  } else {
-    stop("'interaction' must be either FALSE or TRUE.")
-  }
-
-  fit_ret_y1 = exp(x_reg_y1%*%est_ret)/(1+exp(x_reg_y1%*%est_ret))
-  fit_ret_y0 = exp(x_reg_y0%*%est_ret)/(1+exp(x_reg_y0%*%est_ret))
-
-  fit_ret_y1 = fit_ret_y1*(fit_ret_y1 >= small_e)*(fit_ret_y1 <= (1-small_e))
-             + small_e*(fit_ret_y1 < small_e) + (1-small_e)*(fit_ret_y1 > (1-small_e))
-  fit_ret_y0 = fit_ret_y0*(fit_ret_y0 >= small_e)*(fit_ret_y0 <= (1-small_e))
-             + small_e*(fit_ret_y0 < small_e) + (1-small_e)*(fit_ret_y0 > (1-small_e))
-
-  # Estimation of the odds ratio
-
-  P11 = fit_ret_y1
-  P10 = fit_ret_y0
-  P01 = 1 - P11
-  P00 = 1 - P10
-
-  OR_num = P11*P00
-  OR_den = P10*P01
-  OR_num = OR_num*(OR_num >= small_e) + small_e*(OR_num < small_e)
-  OR_den = OR_den*(OR_den >= small_e) + small_e*(OR_den < small_e)
-  OR = OR_num/OR_den
-  logOR = log(OR)
-
-  # Estimation of the upper bounds
-
-  if (sampling=='cc'){
-
-    betaRR_cc1 = colMeans(logOR*y)/mean(y)
-    betaRR_cc0 = colMeans(logOR*(1-y))/mean(1-y)
-    betaRR_cc = pgrd*betaRR_cc1 + (1-pgrd)*betaRR_cc0
-    est = betaRR_cc
-
-  }  else if (sampling=='cp'){
-
-    betaRR_cp = colMeans(logOR*(1-y))/mean(1-y)
-    est = rep(betaRR_cp,length(pgrd))
-
-  }
-
-  outputs = list("est" = est, "pseq" = pgrd)
-
-class(outputs) = "ciccr"
-
-outputs
-
+  outputs
 }
-
-

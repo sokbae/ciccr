@@ -2,7 +2,7 @@
 % Please edit documentation in R/cicc_plot.R
 \name{cicc_plot}
 \alias{cicc_plot}
-\title{Plotting Upper Bounds on Relative Risk and Attributable Risk}
+\title{Plotting Upper Bounds on Relative and Attributable Risk}
 \usage{
 cicc_plot(
   results,
@@ -15,11 +15,11 @@ cicc_plot(
 )
 }
 \arguments{
-\item{results}{estimation results from either cicc_RR() or cicc_AR}
+\item{results}{estimation results from either cicc_RR or cicc_AR}
 
 \item{parameter}{'RR' for relative risk; 'AR' for attributable risk (default =  'RR')}
 
-\item{sampling}{'cc' for case-control sampling; 'cp' for case-population sampling (default sampling =  'cc')}
+\item{sampling}{'cc' for case-control sampling; 'cp' for case-population sampling (default =  'cc')}
 
 \item{save_plots}{TRUE if the plots are saved as pdf files; FALSE if not (default = FALSE)}
 
@@ -36,18 +36,18 @@ A X-Y plot where the X axis shows the range of p from 0 to p_upper and
 the Y axis depicts both point estimates and the upper end point of the one-sided confidence intervals.
 }
 \description{
-Plots upper bounds on relative risk and attributable risk
+Plots upper bounds on relative and attributable risk
 }
 \examples{
-# use the ACS dataset included in the package.
-  y = ciccr::ACS$topincome
-  t = ciccr::ACS$baplus
-  x = ciccr::ACS$age
+# use the ACS_CC dataset included in the package.
+  y = ciccr::ACS_CC$topincome
+  t = ciccr::ACS_CC$baplus
+  x = ciccr::ACS_CC$age
   results = cicc_RR(y, t, x)
   cicc_plot(results)
 
 }
 \references{
-Sung Jae Jun and Sokbae Lee. Causal Inference in Case-Control Studies.
+Jun, S.J. and Lee, S. (2020). Causal Inference in Case-Control Studies.
 \url{https://arxiv.org/abs/2004.08318}.
 }

@@ -1,4 +1,4 @@
-#' ACS
+#' ACS_CC
 #'
 #' A case-control sample extracted from American Community Survey (ACS) 2018, restricted to white males residing in California with at least a bachelor's degree.
 #' The orginial ACS dataset is not from case-control sampling, but this case-control sample is obtained by the following procedure.
@@ -13,4 +13,6 @@
 #'   \item{topincome}{1 if income is top-coded; 0 otherwise}
 #' }
 #' @source \url{https://usa.ipums.org/usa/}
-"ACS"
+"ACS_CC"
+
+

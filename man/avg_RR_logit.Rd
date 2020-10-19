@@ -2,55 +2,38 @@
 % Please edit documentation in R/avg_RR_logit.R
 \name{avg_RR_logit}
 \alias{avg_RR_logit}
-\title{An Average of the Upper Bound of Causal Log Relative Risk}
+\title{An Average of the Log Odds Ratio}
 \usage{
-avg_RR_logit(
-  y,
-  t,
-  x,
-  sampling = "cc",
-  p_upper = 1L,
-  length = 20L,
-  interaction = FALSE,
-  small_e = 1e-08
-)
+avg_RR_logit(y, t, x, w = "control")
 }
 \arguments{
 \item{y}{n-dimensional vector of binary outcomes}
 
 \item{t}{n-dimensional vector of binary treatments}
 
-\item{x}{n by p matrix of covariates}
+\item{x}{n by d matrix of covariates}
 
-\item{sampling}{'cc' for case-control sampling; 'cp' for case-population sampling (default sampling =  'cc')}
-
-\item{p_upper}{specified upper bound for the unknown true case probability (default = 1)}
-
-\item{length}{specified length of a sequence from 0 to p_upper (default = 20)}
-
-\item{interaction}{TRUE if there are interaction terms in the retrospective logistic model; FALSE if not (default = FALSE)}
-
-\item{small_e}{a small positive constant to ensure that the fitted probability is bounded between small_e and 1-small_e
-(default small_e = 1e-8)}
+\item{w}{'case' if the average is conditional on the case sample; 'control' if it is conditional on the control sample
+default w =  'control'}
 }
 \value{
 An S3 object of type "ciccr". The object has the following elements.
-\item{est}{(length)-dimensional vector of the average of the upper bound of causal attributable risk}
-\item{pseq}{(length)-dimensional vector of a grid from 0 to p_upper}
+\item{est}{a scalar estimate of the weighted average of the log odds ratio using retrospective logistic regression}
+\item{se}{standard error}
 }
 \description{
-Averages the upper bound of causal log relative risk using logistic regression models
-under the monotone treatment response (MTR) and monotone treatment selection (MTS) assumptions.
+Averages the log odds ratio using retrospective logistic regression.
 }
 \examples{
-# use the ACS dataset included in the package
-  y = ciccr::ACS$topincome
-  t = ciccr::ACS$baplus
-  x = ciccr::ACS$age
-  results = avg_RR_logit(y, t, x, sampling = 'cc')
+# use the ACS_CC dataset included in the package
+  y = ciccr::ACS_CC$topincome
+  t = ciccr::ACS_CC$baplus
+  x = ciccr::ACS_CC$age
+# use 'case' to condition on the distribution of covariates given y = 1
+  results = avg_RR_logit(y, t, x, 'case')
 
 }
 \references{
-Sung Jae Jun and Sokbae Lee. Causal Inference in Case-Control Studies.
+Jun, S.J. and Lee, S. (2020). Causal Inference in Case-Control Studies.
 \url{https://arxiv.org/abs/2004.08318}.
 }

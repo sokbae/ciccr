@@ -1,15 +1,16 @@
 #' @title Causal Inference on Attributable Risk
 #'
-#' @description Provides an upper bound on the average of attributable risk.
+#' @description Provides an upper bound on the average of attributable risk
+#' under the monotone treatment response (MTR) and monotone treatment selection (MTS) assumptions.
 #'
 #' @param y n-dimensional vector of binary outcomes
 #' @param t n-dimensional vector of binary treatments
-#' @param x n by p matrix of covariates
-#' @param sampling 'cc' for case-control sampling; 'cp' for case-population sampling (default sampling =  'cc')
+#' @param x n by d matrix of covariates
+#' @param sampling 'cc' for case-control sampling; 'cp' for case-population sampling (default =  'cc')
 #' @param p_upper a specified upper bound for the unknown true case probability (default = 1)
-#' @param cov_prob parameter for coverage probability of a confidence interval (default = 0.95)
+#' @param cov_prob coverage probability of a confidence interval (default = 0.95)
 #' @param length specified length of a sequence from 0 to p_upper (default = 21)
-#' @param interaction TRUE if there are interaction terms in the retrospective logistic model; FALSE if not (default = FALSE)
+#' @param interaction TRUE if there are interaction terms in the retrospective logistic model; FALSE if not (default = TRUE)
 #' @param no_boot number of bootstrap repetitions to compute the confidence intervals (default = 0)
 #'
 #' @return An S3 object of type "ciccr". The object has the following elements:
@@ -20,24 +21,28 @@
 #' \item{return_code}{status of existence of missing values in bootstrap replications}
 #'
 #' @examples
-#' # use the ACS dataset included in the package.
-#'   y = ciccr::ACS$topincome
-#'   t = ciccr::ACS$baplus
-#'   x = ciccr::ACS$age
-#'   AR = cicc_AR(y, t, x, sampling = 'cc', no_boot = 100)
+#' # use the ACS_CC dataset included in the package.
+#'   y = ciccr::ACS_CC$topincome
+#'   t = ciccr::ACS_CC$baplus
+#'   x = ciccr::ACS_CC$age
+#'   results_AR = cicc_AR(y, t, x, sampling = 'cc', no_boot = 100)
 #'
-#' @references Sung Jae Jun and Sokbae Lee. Causal Inference in Case-Control Studies.
+#' @references Jun, S.J. and Lee, S. (2020). Causal Inference in Case-Control Studies.
 #' \url{https://arxiv.org/abs/2004.08318}.
+#' @references Manski, C.F. (1997). Monotone Treatment Response.
+#' Econometrica, 65(6), 1311-1334.
+#' @references Manski, C.F. and Pepper, J.V. (2000). Monotone Instrumental Variables: With an Application to the Returns to Schooling.
+#' Econometrica, 68(4), 997-1010.
 #'
 #' @export
-cicc_AR = function(y, t, x, sampling = 'cc', p_upper = 1L, cov_prob = 0.95, length = 21L, interaction = FALSE, no_boot = 0L){
+cicc_AR = function(y, t, x, sampling = 'cc', p_upper = 1L, cov_prob = 0.95, length = 21L, interaction = TRUE, no_boot = 0L){
 
   # Check whether p_upper is in (0,1]
   if (p_upper <=0L || p_upper > 1L){
     stop("'p_upper' must be in (0,1].")
   }
 
-  # Check whether length_SA > 0
+  # Check whether length > 0
   if (length <= 0){
     stop("'length' must be greater than zero.")
   }

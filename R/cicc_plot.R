@@ -1,10 +1,10 @@
-#' @title Plotting Upper Bounds on Relative Risk and Attributable Risk
+#' @title Plotting Upper Bounds on Relative and Attributable Risk
 #'
-#' @description Plots upper bounds on relative risk and attributable risk
+#' @description Plots upper bounds on relative and attributable risk
 #'
-#' @param results estimation results from either cicc_RR() or cicc_AR
+#' @param results estimation results from either cicc_RR or cicc_AR
 #' @param parameter 'RR' for relative risk; 'AR' for attributable risk (default =  'RR')
-#' @param sampling 'cc' for case-control sampling; 'cp' for case-population sampling (default sampling =  'cc')
+#' @param sampling 'cc' for case-control sampling; 'cp' for case-population sampling (default =  'cc')
 #' @param save_plots TRUE if the plots are saved as pdf files; FALSE if not (default = FALSE)
 #' @param file_name the pdf file name to save the plots (default = Sys.Date())
 #' @param plots_ctl value to determine the topleft position of the legend in the figure
@@ -16,14 +16,14 @@
 #' the Y axis depicts both point estimates and the upper end point of the one-sided confidence intervals.
 #'
 #' @examples
-#' # use the ACS dataset included in the package.
-#'   y = ciccr::ACS$topincome
-#'   t = ciccr::ACS$baplus
-#'   x = ciccr::ACS$age
+#' # use the ACS_CC dataset included in the package.
+#'   y = ciccr::ACS_CC$topincome
+#'   t = ciccr::ACS_CC$baplus
+#'   x = ciccr::ACS_CC$age
 #'   results = cicc_RR(y, t, x)
 #'   cicc_plot(results)
 #'
-#' @references Sung Jae Jun and Sokbae Lee. Causal Inference in Case-Control Studies.
+#' @references Jun, S.J. and Lee, S. (2020). Causal Inference in Case-Control Studies.
 #' \url{https://arxiv.org/abs/2004.08318}.
 #'
 #' @export
