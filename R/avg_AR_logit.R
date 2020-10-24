@@ -8,8 +8,10 @@
 #' @param x n by d matrix of covariates
 #' @param sampling 'cc' for case-control sampling; 'cp' for case-population sampling (default =  'cc')
 #' @param p_upper specified upper bound for the unknown true case probability (default = 1)
-#' @param length specified length of a sequence from 0 to p_upper (default = 20)
+#' @param length specified length of a sequence from 0 to p_upper (default = 21)
 #' @param interaction TRUE if there are interaction terms in the retrospective logistic model; FALSE if not (default = TRUE)
+#' @param eps a small constant that determines the trimming of the estimated probabilities.
+#' Specifically, the estimate probability is trimmed to be between eps and 1-eps (default = 1e-8).
 #'
 #' @return An S3 object of type "ciccr". The object has the following elements.
 #' \item{est}{(length)-dimensional vector of the average of the upper bound of causal attributable risk}
@@ -30,7 +32,7 @@
 #' Econometrica, 68(4), 997-1010.
 #'
 #' @export
-avg_AR_logit = function(y, t, x, sampling = 'cc', p_upper = 1L, length = 20L, interaction = TRUE){
+avg_AR_logit = function(y, t, x, sampling = 'cc', p_upper = 1L, length = 21L, interaction = TRUE, eps=1e-8){
 
   # Check whether y is either 0 or 1
   if ( sum( !(y %in% c(0,1)) ) > 0 ){
@@ -49,14 +51,12 @@ avg_AR_logit = function(y, t, x, sampling = 'cc', p_upper = 1L, length = 20L, in
 
   # Prospective logistic estimation of P(Y=1|X=x)
 
-  small_e = 1e-8
-
   lm_pro = stats::glm(y~x, family=stats::binomial("logit"))
   est_pro = stats::coef(lm_pro)
   fit_pro = stats::fitted.values(lm_pro)
   fit_pro = matrix(fit_pro,ncol=1)
 
-  fit_pro = fit_pro + small_e*(fit_pro < small_e) + (1-small_e)*(fit_pro > (1-small_e))
+  fit_pro = trim_pr(fit_pro)
 
   # Estimation of r(x,p)
 
@@ -67,7 +67,6 @@ avg_AR_logit = function(y, t, x, sampling = 'cc', p_upper = 1L, length = 20L, in
   if (sampling=='cc'){
     r_num = ((1-hhat)*fit_pro)%*%pseq
     r_den = r_num + (hhat*(1-fit_pro))%*%(1-pseq)
-    r_den = r_den + small_e*(r_den < small_e)
     r_cc = r_num/r_den
   }  else if (sampling=='cp'){
     r1 = (1-hhat)/hhat
@@ -97,13 +96,10 @@ avg_AR_logit = function(y, t, x, sampling = 'cc', p_upper = 1L, length = 20L, in
   fit_ret_y1 = exp(x_reg_y1%*%est_ret)/(1+exp(x_reg_y1%*%est_ret))
   fit_ret_y0 = exp(x_reg_y0%*%est_ret)/(1+exp(x_reg_y0%*%est_ret))
 
-  fit_ret_y1 = fit_ret_y1 + small_e*(fit_ret_y1 < small_e) + (1-small_e)*(fit_ret_y1 > (1-small_e))
-  fit_ret_y0 = fit_ret_y0 + small_e*(fit_ret_y0 < small_e) + (1-small_e)*(fit_ret_y0 > (1-small_e))
-
   # Estimation of Gamma_AR(x,p)
 
-  P11 = fit_ret_y1
-  P10 = fit_ret_y0
+  P11 = trim_pr(fit_ret_y1)
+  P10 = trim_pr(fit_ret_y0)
   P11 = matrix(P11, ncol=1)%*%matrix(1, nrow=1, ncol=ncol(pseq))
   P10 = matrix(P10, ncol=1)%*%matrix(1, nrow=1, ncol=ncol(pseq))
 
@@ -115,11 +111,9 @@ avg_AR_logit = function(y, t, x, sampling = 'cc', p_upper = 1L, length = 20L, in
   if (sampling=='cc'){
 
     term1_cc_den = P10 + r_cc*(P11-P10)
-    term1_cc_den = term1_cc_den + small_e*(term1_cc_den < small_e)
     term1_cc = P11/term1_cc_den
 
     term2_cc_den = P00 + r_cc*(P01-P00)
-    term2_cc_den = term2_cc_den + small_e*(term2_cc_den < small_e)
     term2_cc = P01/term2_cc_den
 
     GammaAR_cc = term1_cc - term2_cc
@@ -147,5 +141,3 @@ class(outputs) = "ciccr"
 outputs
 
 }
-
-

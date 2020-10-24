@@ -13,7 +13,8 @@ cicc_AR(
   cov_prob = 0.95,
   length = 21L,
   interaction = TRUE,
-  no_boot = 0L
+  no_boot = 0L,
+  eps = 1e-08
 )
 }
 \arguments{
@@ -34,6 +35,9 @@ cicc_AR(
 \item{interaction}{TRUE if there are interaction terms in the retrospective logistic model; FALSE if not (default = TRUE)}
 
 \item{no_boot}{number of bootstrap repetitions to compute the confidence intervals (default = 0)}
+
+\item{eps}{a small constant that determines the trimming of the estimated probabilities.
+Specifically, the estimate probability is trimmed to be between eps and 1-eps (default = 1e-8).}
 }
 \value{
 An S3 object of type "ciccr". The object has the following elements:
