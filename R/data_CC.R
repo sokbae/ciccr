@@ -1,7 +1,7 @@
 #' ACS_CC
 #'
 #' A case-control sample extracted from American Community Survey (ACS) 2018, restricted to white males residing in California with at least a bachelor's degree.
-#' The orginial ACS dataset is not from case-control sampling, but this case-control sample is obtained by the following procedure.
+#' The original ACS dataset is not from case-control sampling, but this case-control sample is obtained by the following procedure.
 #' The case sample is composed of 921 individuals whose income is top-coded.
 #' The control sample of equal size is randomly drawn without replacement from the pool of individuals whose income is not top-coded.
 #' Age is restricted to be between 25 and 70.

@@ -2,16 +2,16 @@
 #' @name ciccr
 #' @title ciccr: a package for causal inference in case-control and case-population studies
 #'
-#' @description The ciccr package provides methods for causal infernce in case-control and case-population studies
+#' @description The ciccr package provides methods for causal inference in case-control and case-population studies
 #' under the monotone treatment response (MTR) and monotone treatment selection (MTS) assumptions.
 #'
 #' @section Functions:
 #' The package includes the following:
 #' \itemize{
 #' \item{\code{\link{cicc_plot}}: }{plots upper bounds on relative and attributable risk.}
-#' \item{\code{\link{cicc_RR}}: }{carries out causual inference on relative risk.}
+#' \item{\code{\link{cicc_RR}}: }{carries out causal inference on relative risk.}
 #' \item{\code{\link{avg_RR_logit}}: }{averages the log odds ratio using retrospective logistic regression.}
-#' \item{\code{\link{cicc_AR}}: }{carries out causual inference on attributable risk.}
+#' \item{\code{\link{cicc_AR}}: }{carries out causal inference on attributable risk.}
 #' \item{\code{\link{avg_AR_logit}}: }{averages the upper bound on causal attributable risk using prospective and retrospective logistic regression models.}
 #' \item{\code{\link{ACS_CC}}: }{provides an illustrative case-control sample.}
 #' \item{\code{\link{ACS_CP}}: }{provides an illustrative case-population sample.}
