@@ -1,7 +1,7 @@
 Package: ciccr
 Type: Package
 Title: Causal Inference in Case-Control Studies
-Version: 0.2.0
+Version: 0.2.0.900
 Authors@R: c(
     person("Sung Jae", "Jun", email = "suj14@psu.edu", role = "aut"),
     person("Sokbae", "Lee", email = "sl3841@columbia.edu", role = c("aut", "cre")))
