@@ -7,6 +7,7 @@
 
 [![Travis build
 status](https://travis-ci.org/sokbae/ciccr.svg?branch=master)](https://travis-ci.org/github/sokbae/ciccr)
+[![](https://cranlogs.r-pkg.org/badges/ciccr)](https://CRAN.R-project.org/package=ciccr)
 <!-- badges: end -->
 
 The goal of ciccr is to implement methods for carrying out causal
