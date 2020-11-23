@@ -105,13 +105,13 @@ Here, 'cc' refers to case-control sampling and 0.95 refers to the level of the u
   print(ci)
 ```
 
-The S3 object `results` contains estimates `est`, standard errors `se`, and one-sided confidence bands `ci` at `p = 0` and `p = 1`. The point estimates and confidence interval estimates of the `cicc_RR` command are based on the scale of log relative risk. It is more conventional to look at the results in terms of the relative scale. To do so, we plot the results in the following way:  
+The S3 object `results` contains estimates `est`, standard errors `se`, and one-sided confidence bands `ci` at `p = 0` and `p = 1`. The point estimates and confidence interval estimates of the `cicc_RR` command are based on the scale of log relative risk. It is more conventional to look at the results in terms of relative risk. To do so, we plot the results in the following way:  
 
 ```{r}
 cicc_plot(results)
 ```
 
-To interpret the results, we assume both marginal treatment response (MTR) and marginal treatment selection (MTS). In this setting, MTR means that everyone will not earn less by obtaining a degree higher than bachelor's degree; MTS indicates that those who selected into higher education have higher potential to earn top incomes. Based on the MTR and MTS assumptions, we can conclude that the treatment effect lies in between 1 and the upper end point of the one-sided confidence interval with high probability. Thus, the estimates in the graph above suggest that the effect of obtaining a degree higher than bachelor's degree is anywhere between 1 and the upper end points of the uniform confidence bands. This roughly implies that the chance of earning top incomes may increase up to by a factor as large as the upper end points of the uniform confidence band, but allowing for possibility of no positive effect at all.  The results are shown over the range of the unknown true case probability. See [Jun and Lee, 2020](https://arxiv.org/abs/2004.08318) for more detailed explanations regarding how to interpret the estimation results.   
+To interpret the results, we assume both marginal treatment response (MTR) and marginal treatment selection (MTS). In this setting, MTR means that everyone will not earn less by obtaining a degree higher than bachelor's degree; MTS indicates that those who selected into higher education have higher potential to earn top incomes. Based on the MTR and MTS assumptions, we can conclude that the treatment effect lies in between 1 and the upper end point of the one-sided confidence interval with high probability. Thus, the estimates in the graph above suggest that the effect of obtaining a degree higher than bachelor's degree is anywhere between 1 and the upper end points of the uniform confidence band. This roughly implies that the chance of earning top incomes may increase up to by a factor as large as the upper end points of the uniform confidence band, but allowing for possibility of no positive effect at all.  The results are shown over the range of the unknown true case probability. See [Jun and Lee, 2020](https://arxiv.org/abs/2004.08318) for more detailed explanations regarding how to interpret the estimation results.   
 
 ## Comparison with Logistic Regression
 
@@ -127,7 +127,7 @@ exp(est_logit)
 exp(ci_logit)
 ```
 
-Here, the relevant coefficient is 2.06 (`t`) and its two-sided 90% confidence interval is [1.75, 2.43]. If we assume strong ignorability, the treatment effect is about 2 and its two-sided confidence interval is between [1.75, 2.43]. However, it is unlikely that the higher BA treatment satisfies the strong ignorability condition. 
+Here, the relevant coefficient is 2.06 (`t`) and its two-sided 90% confidence interval is [1.75, 2.43]. If we assume strong ignorability, the treatment effect is about 2 and its two-sided confidence interval is between [1.75, 2.43]. However, it is unlikely that the higher-degrees-than-BA treatment satisfies the strong ignorability condition. 
 
 ## What else the package can do
 

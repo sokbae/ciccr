@@ -140,8 +140,8 @@ The S3 object `results` contains estimates `est`, standard errors `se`,
 and one-sided confidence bands `ci` at `p = 0` and `p = 1`. The point
 estimates and confidence interval estimates of the `cicc_RR` command are
 based on the scale of log relative risk. It is more conventional to look
-at the results in terms of the relative scale. To do so, we plot the
-results in the following way:
+at the results in terms of relative risk. To do so, we plot the results
+in the following way:
 
 ``` r
 cicc_plot(results)
@@ -159,7 +159,7 @@ between 1 and the upper end point of the one-sided confidence interval
 with high probability. Thus, the estimates in the graph above suggest
 that the effect of obtaining a degree higher than bachelor’s degree is
 anywhere between 1 and the upper end points of the uniform confidence
-bands. This roughly implies that the chance of earning top incomes may
+band. This roughly implies that the chance of earning top incomes may
 increase up to by a factor as large as the upper end points of the
 uniform confidence band, but allowing for possibility of no positive
 effect at all. The results are shown over the range of the unknown true
@@ -199,8 +199,9 @@ exp(ci_logit)
 Here, the relevant coefficient is 2.06 (`t`) and its two-sided 90%
 confidence interval is \[1.75, 2.43\]. If we assume strong ignorability,
 the treatment effect is about 2 and its two-sided confidence interval is
-between \[1.75, 2.43\]. However, it is unlikely that the higher BA
-treatment satisfies the strong ignorability condition.
+between \[1.75, 2.43\]. However, it is unlikely that the
+higher-degrees-than-BA treatment satisfies the strong ignorability
+condition.
 
 ## What else the package can do
 
