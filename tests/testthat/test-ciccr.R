@@ -87,6 +87,23 @@ test_that("The default sampling option for avg_AR_logit is 'cc'", {
 
 })
 
+test_that("The results for cicc_RR should be different between 'cc' and 'cp'", {
+
+  y = ACS_CC$topincome
+  t = ACS_CC$baplus
+  x = ACS_CC$age
+  results_cc = cicc_RR(y, t, x, sampling = 'cc')
+
+  y = ACS_CP$topincome
+  y = as.integer(is.na(y)==FALSE)
+  t = ACS_CP$baplus
+  x = ACS_CP$age
+  results_cp = cicc_RR(y, t, x, sampling = 'cp')
+
+  expect_false(sum((results_cc$est != results_cp$est))==0)
+
+})
+
 test_that("The default sampling option for cicc_RR is 'cc'", {
 
   y = ACS_CC$topincome
@@ -99,6 +116,17 @@ test_that("The default sampling option for cicc_RR is 'cc'", {
   expect_equal( results_default$est, results_cc$est)
 
 })
+
+test_that("The sampling option for cicc_RR is either 'cc' or 'cp'", {
+
+  y = ACS_CC$topincome
+  t = ACS_CC$baplus
+  x = ACS_CC$age
+
+  expect_error(cicc_RR(y, t, x, sampling = 'cr'))
+
+})
+
 
 test_that("The default sampling option for cicc_AR is 'cc'", {
 
