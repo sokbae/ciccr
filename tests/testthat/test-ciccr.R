@@ -52,7 +52,7 @@ test_that("There should be an error other than 'case' and 'control'", {
 
 })
 
-test_that("Each element of 'y' must be either 0 or 1.", {
+test_that("Method 1: Each element of 'y' must be either 0 or 1.", {
 
   y = ACS_CC$topincome
   t = ACS_CC$baplus
@@ -63,7 +63,18 @@ test_that("Each element of 'y' must be either 0 or 1.", {
 
 })
 
-test_that("Each element of 't' must be either 0 or 1.", {
+test_that("Method 2: Each element of 'y' must be either 0 or 1.", {
+
+  y = ACS_CC$topincome
+  t = ACS_CC$baplus
+  x = ACS_CC$age
+  y[1] = 2
+
+  expect_error(avg_AR_logit(y, t, x))
+
+})
+
+test_that("Method 1: Each element of 't' must be either 0 or 1.", {
 
   y = ACS_CC$topincome
   t = ACS_CC$baplus
@@ -71,6 +82,17 @@ test_that("Each element of 't' must be either 0 or 1.", {
   t[1] = 2
 
   expect_error(avg_RR_logit(y, t, x))
+
+})
+
+test_that("Method 2: Each element of 't' must be either 0 or 1.", {
+
+  y = ACS_CC$topincome
+  t = ACS_CC$baplus
+  x = ACS_CC$age
+  t[1] = 2
+
+  expect_error(avg_AR_logit(y, t, x))
 
 })
 
@@ -124,6 +146,55 @@ test_that("The sampling option for cicc_RR is either 'cc' or 'cp'", {
   x = ACS_CC$age
 
   expect_error(cicc_RR(y, t, x, sampling = 'cr'))
+
+})
+
+test_that("The sampling option for avg_AR_logit is either 'cc' or 'cp'", {
+
+  y = ACS_CC$topincome
+  t = ACS_CC$baplus
+  x = ACS_CC$age
+
+  expect_error(avg_AR_logit(y, t, x, sampling = 'cr'))
+
+})
+
+test_that("The results for avg_AR_logit should be different between 'cc' and 'cp'", {
+
+  y = ACS_CC$topincome
+  t = ACS_CC$baplus
+  x = ACS_CC$age
+  results_cc = avg_AR_logit(y, t, x, sampling = 'cc')
+
+  y = ACS_CP$topincome
+  y = as.integer(is.na(y)==FALSE)
+  t = ACS_CP$baplus
+  x = ACS_CP$age
+  results_cp = avg_AR_logit(y, t, x, sampling = 'cp')
+
+  expect_false(sum((results_cc$est != results_cp$est))==0)
+
+})
+
+test_that("The results for avg_AR_logit should be different between interaction = TRUE and FALSE", {
+
+  y = ACS_CC$topincome
+  t = ACS_CC$baplus
+  x = ACS_CC$age
+  results1 = avg_AR_logit(y, t, x, interaction = FALSE)
+  results2 = avg_AR_logit(y, t, x, interaction = TRUE)
+
+  expect_false(sum((results1$est != results2$est))==0)
+
+})
+
+test_that("There should be an error if interaction != TRUE or FALSE", {
+
+  y = ACS_CC$topincome
+  t = ACS_CC$baplus
+  x = ACS_CC$age
+
+  expect_error(avg_AR_logit(y, t, x, interaction = Linear))
 
 })
 
