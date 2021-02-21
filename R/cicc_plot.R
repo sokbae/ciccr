@@ -36,6 +36,11 @@ cicc_plot = function(results, parameter = 'RR', sampling = 'cc',
     stop("'parameter' must be either 'RR' or 'AR'.")
   }
 
+  # Check whether sampling is either case-control or case-population
+  if ( sum( !(sampling %in% c('cc','cp')) ) > 0 ){
+    stop("'sampling' must be either 'cc' or 'cp'.")
+  }
+
   if (save_plots == TRUE){
     if (plots_dir == TRUE){
       setwd(plots_dir)

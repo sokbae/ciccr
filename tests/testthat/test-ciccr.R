@@ -140,3 +140,38 @@ test_that("The default sampling option for cicc_AR is 'cc'", {
   expect_equal( results_default$est, results_cc$est)
 
 })
+
+test_that("Method 1: Checking cicc_plot options", {
+
+  y = ACS_CC$topincome
+  t = ACS_CC$baplus
+  x = ACS_CC$age
+
+  results = cicc_RR(y, t, x)
+
+  expect_error(cicc_plot(results, parameter = 'Relative Risk'))
+
+})
+
+test_that("Method 2: Checking cicc_plot options", {
+
+  y = ACS_CC$topincome
+  t = ACS_CC$baplus
+  x = ACS_CC$age
+
+  results = cicc_RR(y, t, x)
+
+  expect_error(cicc_plot(results, sampling ='cr'))
+
+})
+
+test_that("Checking whether cicc_plot works with default options", {
+
+  y = ACS_CC$topincome
+  t = ACS_CC$baplus
+  x = ACS_CC$age
+
+  expect_type(cicc_RR(y, t, x), "list")
+
+})
+
