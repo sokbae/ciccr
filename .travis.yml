@@ -2,3 +2,11 @@
 
 language: R
 cache: packages
+
+language: r
+
+r_packages:
+  - covr
+
+after_success:
+  - Rscript -e 'library(covr); codecov()'
