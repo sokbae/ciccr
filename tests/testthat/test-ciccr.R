@@ -15,7 +15,7 @@ expect_equal( results_default$est, results_control$est)
 
 })
 
-test_that("The default sampling option for avg_A_logit is 'cc'", {
+test_that("The default sampling option for avg_AR_logit is 'cc'", {
 
   y = ACS_CC$topincome
   t = ACS_CC$baplus
@@ -23,6 +23,32 @@ test_that("The default sampling option for avg_A_logit is 'cc'", {
 
   results_default = avg_AR_logit(y, t, x)
   results_cc = avg_AR_logit(y, t, x, sampling = 'cc')
+
+  expect_equal( results_default$est, results_cc$est)
+
+})
+
+test_that("The default sampling option for cicc_RR is 'cc'", {
+
+  y = ACS_CC$topincome
+  t = ACS_CC$baplus
+  x = ACS_CC$age
+
+  results_default = cicc_RR(y, t, x)
+  results_cc = cicc_RR(y, t, x, sampling = 'cc')
+
+  expect_equal( results_default$est, results_cc$est)
+
+})
+
+test_that("The default sampling option for cicc_AR is 'cc'", {
+
+  y = ACS_CC$topincome
+  t = ACS_CC$baplus
+  x = ACS_CC$age
+
+  results_default = cicc_AR(y, t, x)
+  results_cc = cicc_AR(y, t, x, sampling = 'cc')
 
   expect_equal( results_default$est, results_cc$est)
 
