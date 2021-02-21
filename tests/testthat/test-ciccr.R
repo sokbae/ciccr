@@ -198,7 +198,6 @@ test_that("There should be an error if interaction != TRUE or FALSE", {
 
 })
 
-
 test_that("The default sampling option for cicc_AR is 'cc'", {
 
   y = ACS_CC$topincome
@@ -211,6 +210,40 @@ test_that("The default sampling option for cicc_AR is 'cc'", {
   expect_equal( results_default$est, results_cc$est)
 
 })
+
+test_that("Method 1: Checking options for cicc_AR", {
+
+  y = ACS_CC$topincome
+  t = ACS_CC$baplus
+  x = ACS_CC$age
+
+  expect_error(cicc_AR(y, t, x, p_upper = 1.1))
+
+})
+
+test_that("Method 2: Checking options for cicc_AR", {
+
+  y = ACS_CC$topincome
+  t = ACS_CC$baplus
+  x = ACS_CC$age
+
+  expect_error(cicc_AR(y, t, x, length = 0))
+
+})
+
+test_that("Checking bootstrap works for cicc_AR", {
+
+  y = ACS_CC$topincome
+  t = ACS_CC$baplus
+  x = ACS_CC$age
+
+  results1 = cicc_AR(y, t, x, no_boot = 10)
+  results2 = cicc_AR(y, t, x, no_boot = 20)
+
+  expect_false(sum((results1$ci != results2$ci))==0)
+
+})
+
 
 test_that("Method 1: Checking cicc_plot options", {
 
