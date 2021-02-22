@@ -9,8 +9,6 @@
 #' @param file_name the pdf file name to save the plots (default = Sys.Date())
 #' @param plots_ctl value to determine the topleft position of the legend in the figure
 #' a large value makes the legend far away from the confidence intervals (default = 0.3)
-#' @param plots_dir a directory where the plots are saved (default = FALSE);
-#' plots will be saved under "(current working directory)/figures" by default.
 #'
 #' @return A X-Y plot where the X axis shows the range of p from 0 to p_upper and
 #' the Y axis depicts both point estimates and the upper end point of the one-sided confidence intervals.
@@ -28,8 +26,7 @@
 #'
 #' @export
 cicc_plot = function(results, parameter = 'RR', sampling = 'cc',
-                     save_plots = FALSE, file_name = Sys.Date(), plots_ctl = 0.3,
-                     plots_dir = FALSE){
+                     save_plots = FALSE, file_name = Sys.Date(), plots_ctl = 0.3){
 
   # Check whether parameter is either RR or AR
   if ( sum( !(parameter %in% c('RR','AR')) ) > 0 ){
@@ -39,12 +36,6 @@ cicc_plot = function(results, parameter = 'RR', sampling = 'cc',
   # Check whether sampling is either case-control or case-population
   if ( sum( !(sampling %in% c('cc','cp')) ) > 0 ){
     stop("'sampling' must be either 'cc' or 'cp'.")
-  }
-
-  if (save_plots == TRUE){
-    if (plots_dir == TRUE){
-      setwd(plots_dir)
-    }
   }
 
   if (parameter == 'RR'){

@@ -293,3 +293,37 @@ test_that("Checking whether cicc_plot works with default options", {
 
 })
 
+test_that("Checking whether cicc_plot works with save_plots = TRUE", {
+
+  y = ACS_CC$topincome
+  t = ACS_CC$baplus
+  x = ACS_CC$age
+  results = cicc_RR(y, t, x)
+
+  expect_type(cicc_plot(results, save_plots = TRUE), "integer")
+
+})
+
+test_that("Checking whether cicc_plot works AR", {
+
+  y = ACS_CC$topincome
+  t = ACS_CC$baplus
+  x = ACS_CC$age
+  results = cicc_AR(y, t, x)
+
+  expect_type(cicc_plot(results, parameter = 'AR'), "NULL")
+
+})
+
+test_that("Checking whether cicc_plot works AR with sampling cp", {
+
+  y = ACS_CP$topincome
+  y = as.integer(is.na(y)==FALSE)
+  t = ACS_CP$baplus
+  x = ACS_CP$age
+  results = cicc_AR(y, t, x, sampling = 'cp')
+
+  expect_type(cicc_plot(results, parameter = 'AR', sampling = 'cp'), "NULL")
+
+})
+
