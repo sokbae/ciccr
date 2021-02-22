@@ -244,6 +244,20 @@ test_that("Checking bootstrap works for cicc_AR", {
 
 })
 
+
+test_that("Checking bootstrap provides warning for abnormal data for cicc_AR", {
+
+  y = ACS_CC$topincome
+  t = ACS_CC$baplus
+  x = ACS_CC$age
+  x[1] = 1e+10
+
+  results = cicc_AR(y, t, x, no_boot = 10)
+
+  expect_false(sum((results$return_code != "Success: no bootstrap sample is dropped"))==0)
+
+})
+
 test_that("Method 1: Checking cicc_plot options", {
 
   y = ACS_CC$topincome
