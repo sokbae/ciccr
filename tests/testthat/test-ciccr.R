@@ -293,6 +293,18 @@ test_that("Checking whether cicc_plot works with default options", {
 
 })
 
+test_that("Checking whether cicc_plot works when confidence intervals include NA", {
+
+  y = ACS_CC$topincome
+  t = ACS_CC$baplus
+  x = ACS_CC$age
+  results = cicc_RR(y, t, x)
+  results$ci[1] = NA
+
+  expect_type(cicc_plot(results), "NULL")
+
+})
+
 test_that("Checking whether cicc_plot works with save_plots = TRUE", {
 
   y = ACS_CC$topincome
@@ -300,11 +312,11 @@ test_that("Checking whether cicc_plot works with save_plots = TRUE", {
   x = ACS_CC$age
   results = cicc_RR(y, t, x)
 
-  expect_type(cicc_plot(results, save_plots = TRUE), "integer")
+  expect_type(cicc_plot(results, save_plots = TRUE, file_name = "Rplots"), "integer")
 
 })
 
-test_that("Checking whether cicc_plot works AR", {
+test_that("Checking whether cicc_plot works for AR", {
 
   y = ACS_CC$topincome
   t = ACS_CC$baplus
@@ -315,7 +327,18 @@ test_that("Checking whether cicc_plot works AR", {
 
 })
 
-test_that("Checking whether cicc_plot works AR with sampling cp", {
+test_that("Checking whether cicc_plot works for AR with bootstrap", {
+
+  y = ACS_CC$topincome
+  t = ACS_CC$baplus
+  x = ACS_CC$age
+  results = cicc_AR(y, t, x, no_boot = 50L)
+
+  expect_type(cicc_plot(results, parameter = 'AR'), "NULL")
+
+})
+
+test_that("Checking whether cicc_plot works for AR with sampling cp", {
 
   y = ACS_CP$topincome
   y = as.integer(is.na(y)==FALSE)
@@ -327,3 +350,15 @@ test_that("Checking whether cicc_plot works AR with sampling cp", {
 
 })
 
+
+test_that("Checking whether cicc_plot works for AR with sampling cp and bootstrap", {
+
+  y = ACS_CP$topincome
+  y = as.integer(is.na(y)==FALSE)
+  t = ACS_CP$baplus
+  x = ACS_CP$age
+  results = cicc_AR(y, t, x, sampling = 'cp', no_boot = 50L)
+
+  expect_type(cicc_plot(results, parameter = 'AR', sampling = 'cp'), "NULL")
+
+})
