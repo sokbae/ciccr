@@ -244,7 +244,6 @@ test_that("Checking bootstrap works for cicc_AR", {
 
 })
 
-
 test_that("Method 1: Checking cicc_plot options", {
 
   y = ACS_CC$topincome
@@ -274,8 +273,9 @@ test_that("Checking whether cicc_plot works with default options", {
   y = ACS_CC$topincome
   t = ACS_CC$baplus
   x = ACS_CC$age
+  results = cicc_RR(y, t, x)
 
-  expect_type(cicc_RR(y, t, x), "list")
+  expect_type(results, "list")
 
 })
 

@@ -49,6 +49,11 @@ avg_AR_logit = function(y, t, x, sampling = 'cc', p_upper = 1L, length = 21L, in
     stop("'sampling' must be either 'cc' or 'cp'.")
   }
 
+  # Check whether interaction is either TRUE or FALSE
+  if ( sum( !(interaction %in% c('TRUE','FALSE')) ) > 0 ){
+    stop("'interaction' must be either 'TRUE' or 'FALSE'.")
+  }
+
   # Prospective logistic estimation of P(Y=1|X=x)
 
   lm_pro = stats::glm(y~x, family=stats::binomial("logit"))
@@ -89,8 +94,6 @@ avg_AR_logit = function(y, t, x, sampling = 'cc', p_upper = 1L, length = 21L, in
     est_ret = stats::coef(lm_ret)
     x_reg_y1 = cbind(1,1,x)
     x_reg_y0 = cbind(1,0,x)
-  } else {
-    stop("'interaction' must be either FALSE or TRUE.")
   }
 
   fit_ret_y1 = exp(x_reg_y1%*%est_ret)/(1+exp(x_reg_y1%*%est_ret))
