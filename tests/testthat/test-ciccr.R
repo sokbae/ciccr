@@ -289,7 +289,7 @@ test_that("Checking whether cicc_plot works with default options", {
   x = ACS_CC$age
   results = cicc_RR(y, t, x)
 
-  expect_type(results, "list")
+  expect_type(cicc_plot(results), "NULL")
 
 })
 
