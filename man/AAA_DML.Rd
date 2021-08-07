@@ -31,8 +31,7 @@ Averages the log odds ratio using prospective or retrospective high-dimensional 
   y = ciccr::ACS$topincome
   t = ciccr::ACS$baplus
   age = ciccr::ACS$age
-  ind = ciccr::ACS$ind
-  x = splines::bs(age, df=20) # high-dimensional b-splines for age
+  x = splines::bs(age, df=6) # b-splines for age
 
   results = AAA_DML(y, t, x, 'pro', k=2)
 

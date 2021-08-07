@@ -362,3 +362,19 @@ test_that("Checking whether cicc_plot works for AR with sampling cp and bootstra
   expect_type(cicc_plot(results, parameter = 'AR', sampling = 'cp'), "NULL")
 
 })
+
+# added on 7 Aug 2021
+
+test_that("The results for AAA_DML should be different between 'pro' and 'retro'", {
+
+  y = ciccr::ACS$topincome
+  t = ciccr::ACS$baplus
+  age = ciccr::ACS$age
+  x = splines::bs(age, df=6) # b-splines for age
+  results_pro = AAA_DML(y, t, x, 'pro', k=2)
+  results_retro = AAA_DML(y, t, x, 'retro', k=2)
+
+  expect_false( results_pro$est == results_retro$est)
+
+})
+
