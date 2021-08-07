@@ -80,16 +80,13 @@ AAA_DML = function(y, t, x, type = 'pro', k = 10){
     Y_case = Y_est[T_est==1]
     Y_control = Y_est[T_est==0]
 
-    if (is.matrix(X)==FALSE){
-      X_main = X[kfoldindex==k_j]
-      X_est = X[kfoldindex!=k_j]
-      X_case = X_est[T_est==1]
-      X_control = X_est[T_est==0]
-    } else {
+    if (is.matrix(X)==TRUE){
       X_main = X[kfoldindex==k_j,]
       X_est = X[kfoldindex!=k_j,]
       X_case = X_est[T_est==1,]
       X_control = X_est[T_est==0,]
+    } else {
+      stop("'x' must be a matrix with at least two columns.")
     }
 
     # Estimation of Pr(outcome=1|X=x,treat=1) using glmnet package

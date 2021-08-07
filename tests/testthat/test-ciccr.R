@@ -378,3 +378,38 @@ test_that("The results for AAA_DML should be different between 'pro' and 'retro'
 
 })
 
+test_that("AAA_DML: the dimension of x should be greater than 1.", {
+
+  y = ciccr::ACS$topincome
+  t = ciccr::ACS$baplus
+  x = ciccr::ACS$age
+
+  expect_error(AAA_DML(y, t, x))
+
+})
+
+test_that("AAA_DML: Each element of 'y' must be either 0 or 1.", {
+
+  y = ACS$topincome
+  t = ACS$baplus
+  age = ciccr::ACS$age
+  x = splines::bs(age, df=6) # b-splines for age
+  y[1] = 2
+
+  expect_error(AAA_DML(y, t, x))
+
+})
+
+
+test_that("AAA_DML: Each element of 't' must be either 0 or 1.", {
+
+  y = ACS_CC$topincome
+  t = ACS_CC$baplus
+  age = ciccr::ACS$age
+  x = splines::bs(age, df=6) # b-splines for age
+  t[1] = 2
+
+  expect_error(AAA_DML(y, t, x))
+
+})
+
