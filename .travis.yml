@@ -1,18 +1,10 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
-[
-  {
-    "os": "linux",
-    "language": "r",
-    "dist": "xenial",
-    "cache": {
-      "packages": true
-    },
-    "r_packages": [
-      "covr"
-    ],
-    "after_success": [
-      "Rscript -e 'library(covr); codecov()'"
-    ]
-  }
-]
+language: r
+cache: packages
+
+r_packages:
+  - covr
+
+after_success:
+  - Rscript -e 'covr::codecov()'
