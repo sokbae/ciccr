@@ -24,7 +24,7 @@
 #'   x = ciccr::ACS_CC$age
 #'   results = avg_AR_logit(y, t, x, sampling = 'cc')
 #'
-#' @references Jun, S.J. and Lee, S. (2020). Causal Inference in Case-Control Studies.
+#' @references Jun, S.J. and Lee, S. (2020). Causal Inference under Outcome-Based Sampling with Monotonicity Assumptions.
 #' \url{https://arxiv.org/abs/2004.08318}.
 #' @references Manski, C.F. (1997). Monotone Treatment Response.
 #' Econometrica, 65(6), 1311-1334.

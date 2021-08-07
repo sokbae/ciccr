@@ -51,7 +51,7 @@ under the monotone treatment response (MTR) and monotone treatment selection (MT
 
 }
 \references{
-Jun, S.J. and Lee, S. (2020). Causal Inference in Case-Control Studies.
+Jun, S.J. and Lee, S. (2020). Causal Inference under Outcome-Based Sampling with Monotonicity Assumptions.
 \url{https://arxiv.org/abs/2004.08318}.
 
 Manski, C.F. (1997). Monotone Treatment Response.

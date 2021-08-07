@@ -12,8 +12,8 @@ status](https://travis-ci.com/sokbae/ciccr.svg?branch=master)](https://travis-ci
 <!-- badges: end -->
 
 The goal of ciccr is to implement methods for carrying out causal
-inference in case-control studies ([Jun and
-Lee, 2020](https://arxiv.org/abs/2004.08318)).
+inference in case-control studies ([Jun and Lee,
+2020](https://arxiv.org/abs/2004.08318)).
 
 ## Installation
 
@@ -25,8 +25,7 @@ install.packages("ciccr")
 ```
 
 Alternatively, you can install the development version from
-[GitHub](https://github.com/)
-with:
+[GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools") # uncomment this line if devtools is not installed yet 
@@ -54,15 +53,15 @@ about US population. We use the following variables:
   x = ACS_CC$age
 ```
 
-  - The binary outcome `y` is defined to be one if a respondent’s annual
+-   The binary outcome `y` is defined to be one if a respondent’s annual
     total pre-tax wage and salary income is top-coded. In the sample
     extract, the top-coded income bracket has median income $565,000 and
     the next highest income that is not top-coded is $327,000.
 
-  - The binary treatment `t` is defined to be one if a respondent has a
+-   The binary treatment `t` is defined to be one if a respondent has a
     master’s degree, a professional degree, or a doctoral degree.
 
-  - The covariate `x` is age in years and is restricted to be between 25
+-   The covariate `x` is age in years and is restricted to be between 25
     and 70.
 
 The original ACS survey is not from case-control sampling but we
@@ -164,9 +163,9 @@ band. This roughly implies that the chance of earning top incomes may
 increase up to by a factor as large as the upper end points of the
 uniform confidence band, but allowing for possibility of no positive
 effect at all. The results are shown over the range of the unknown true
-case probability. See [Jun and
-Lee, 2020](https://arxiv.org/abs/2004.08318) for more detailed
-explanations regarding how to interpret the estimation results.
+case probability. See [Jun and Lee,
+2020](https://arxiv.org/abs/2004.08318) for more detailed explanations
+regarding how to interpret the estimation results.
 
 ## Comparison with Logistic Regression
 
@@ -211,7 +210,8 @@ attributable risk and how to work with case-population samples.
 
 # References
 
-Sung Jae Jun and Sokbae Lee. Causal Inference in Case-Control Studies.
+Sung Jae Jun and Sokbae Lee. Causal Inference under Outcome-Based
+Sampling with Monotonicity Assumptions.
 <https://arxiv.org/abs/2004.08318>.
 
 Manski, C.F. (1997). Monotone Treatment Response. Econometrica, 65(6),

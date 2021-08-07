@@ -23,7 +23,7 @@ ACS_CP
 A case-population sample extracted from American Community Survey (ACS) 2018, restricted to white males residing in California with at least a bachelor's degree.
 The original ACS dataset is not from case-population sampling, but this case-population sample is obtained by the following procedure.
 The case sample is composed of 921 individuals whose income is top-coded.
-The control sample of equal size is randomly drawn with replacement from all observations and its top-coded status is coded missing.
+The control sample of equal size is randomly drawn without replacement from all observations and its top-coded status is coded missing.
 Age is restricted to be between 25 and 70.
 }
 \keyword{datasets}

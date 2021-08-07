@@ -44,6 +44,6 @@ Plots upper bounds on relative and attributable risk
 
 }
 \references{
-Jun, S.J. and Lee, S. (2020). Causal Inference in Case-Control Studies.
+Jun, S.J. and Lee, S. (2020). Causal Inference under Outcome-Based Sampling with Monotonicity Assumptions.
 \url{https://arxiv.org/abs/2004.08318}.
 }

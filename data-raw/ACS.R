@@ -29,7 +29,7 @@ library(readr)
   usethis::use_data(ACS_CC, overwrite = TRUE)
 
   # Part 2: Construction of Case-Population Sample
-  # Random sampling from all observations with replacement
+  # Random sampling from all observations without replacement
 
   rs_i = sample.int((n_case+n_control),n_case)
   ACS_all = rbind(ACS_case,ACS_control)
@@ -43,4 +43,16 @@ library(readr)
 
   write_csv(ACS_CP, "data-raw/ACS_CP.csv")
   usethis::use_data(ACS_CP, overwrite = TRUE)
+
+  # Part 3: Construction of Random Sample
+  # Keep all observations and shuffle the data
+
+  ACS = rbind(ACS_case,ACS_control)
+  ACS = ACS[,-2]  # drop the marital status variable
+  n = nrow(ACS)
+  ACS = ACS[sample.int(n,n),] # random permutation to shuffle the data
+  rownames(ACS) = c()        # remove row names
+
+  write_csv(ACS, "data-raw/ACS.csv")
+  usethis::use_data(ACS, overwrite = TRUE)
 

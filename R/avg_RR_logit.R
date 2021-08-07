@@ -19,7 +19,7 @@
 #' # use 'case' to condition on the distribution of covariates given y = 1
 #'   results = avg_RR_logit(y, t, x, 'case')
 #'
-#' @references Jun, S.J. and Lee, S. (2020). Causal Inference in Case-Control Studies.
+#' @references Jun, S.J. and Lee, S. (2020). Causal Inference under Outcome-Based Sampling with Monotonicity Assumptions.
 #' \url{https://arxiv.org/abs/2004.08318}.
 #' @export
 avg_RR_logit = function(y, t, x, w = 'control'){
