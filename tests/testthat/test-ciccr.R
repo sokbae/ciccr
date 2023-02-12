@@ -413,3 +413,14 @@ test_that("AAA_DML: Each element of 't' must be either 0 or 1.", {
 
 })
 
+test_that("AAA_DML: 'type' should be either 'pro' and 'retro'", {
+
+  y = ciccr::ACS$topincome
+  t = ciccr::ACS$baplus
+  age = ciccr::ACS$age
+  x = splines::bs(age, df=6) # b-splines for age
+
+  expect_error(AAA_DML(y, t, x, type='random', k=2))
+
+})
+
