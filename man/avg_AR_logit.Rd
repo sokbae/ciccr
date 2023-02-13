@@ -22,7 +22,7 @@ avg_AR_logit(
 
 \item{x}{n by d matrix of covariates}
 
-\item{sampling}{'cc' for case-control sampling; 'cp' for case-population sampling (default =  'cc')}
+\item{sampling}{'cc' for case-control sampling; 'cp' for case-population sampling; 'rs' for case-population sampling (default =  'cc')}
 
 \item{p_upper}{specified upper bound for the unknown true case probability (default = 1)}
 

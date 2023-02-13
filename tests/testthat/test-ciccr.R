@@ -424,3 +424,36 @@ test_that("AAA_DML: 'type' should be either 'pro' and 'retro'", {
 
 })
 
+# added on 13 Feb 2023
+
+test_that("RR: The results should be different between FG and FG_CC", {
+
+  y = FG$flag
+  t = FG$smallPractice
+  x = FG$experYear
+  results_rs = cicc_RR(y, t, x, sampling = 'rs')
+
+  y = FG_CC$flag
+  t = FG_CC$smallPractice
+  x = FG_CC$experYear
+  results_cc = cicc_RR(y, t, x, sampling = 'cc')
+
+  expect_false(sum((results_rs$est != results_cc$est))==0)
+
+})
+
+test_that("AR: The results should be different between FG and FG_CC", {
+
+  y = FG$flag
+  t = FG$smallPractice
+  x = FG$experYear
+  results_rs = avg_AR_logit(y, t, x, sampling = 'rs')
+
+  y = FG_CC$flag
+  t = FG_CC$smallPractice
+  x = FG_CC$experYear
+  results_cc = avg_AR_logit(y, t, x, sampling = 'cc')
+
+  expect_false(sum((results_rs$est != results_cc$est[2]))==0)
+
+})

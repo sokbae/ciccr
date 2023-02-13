@@ -33,9 +33,9 @@ cicc_plot = function(results, parameter = 'RR', sampling = 'cc',
     stop("'parameter' must be either 'RR' or 'AR'.")
   }
 
-  # Check whether sampling is either case-control or case-population
-  if ( sum( !(sampling %in% c('cc','cp')) ) > 0 ){
-    stop("'sampling' must be either 'cc' or 'cp'.")
+  # Check whether sampling is case-control, case-population, or random
+  if ( sum( !(sampling %in% c('cc','cp','rs')) ) > 0 ){
+    stop("'sampling' must be 'cc', 'cp', or 'rs'.")
   }
 
   if (parameter == 'RR'){
@@ -71,7 +71,6 @@ cicc_plot = function(results, parameter = 'RR', sampling = 'cc',
   pdf_file_name = paste(file_name,"AR.pdf",sep="-")
   ylab_name = "Attributable Risk"
 
-  if (sampling=='cc'){
 
       if (sum(is.na(xi_ci) == TRUE) == 0){
 
@@ -84,22 +83,9 @@ cicc_plot = function(results, parameter = 'RR', sampling = 'cc',
         legend_title = c(expression=paste("Estimates of the Upper Bounds on Attributable Risk"))
       }
 
-  } else if (sampling=='cp'){
-
-      if (sum(is.na(xi_ci) == TRUE) == 0){
-
-        ylim_value = c(min(xi),(max(xi_ci)+plots_ctl*(max(xi_ci)-min(xi))))
-        legend_title = c(expression=paste("Estimates of the Upper Bounds on Attributable Risk"),
-                         paste(cov_prob*100,"% One-Sided Uniform Confidence Band",sep=""))
-      } else {
-
-        ylim_value = c(min(xi),(1+plots_ctl)*max(xi))
-        legend_title = c(expression=paste("Estimates of the Upper Bounds on Attributable Risk"))
-      }
-
   }
 
-}
+
 
   xlab_name = "Unknown True Case Probability"
   xlim_value = c(0,max(pseq))

@@ -5,7 +5,9 @@
 #' @param y n-dimensional vector of binary outcomes
 #' @param t n-dimensional vector of binary treatments
 #' @param x n by d matrix of covariates
-#' @param w 'case' if the average is conditional on the case sample; 'control' if it is conditional on the control sample
+#' @param w 'case' if the average is conditional on the case sample;
+#' 'control' if it is conditional on the control sample;
+#' 'all' if it is based on the whole sample;
 #' default w =  'control'
 #' @return An S3 object of type "ciccr". The object has the following elements.
 #' \item{est}{a scalar estimate of the weighted average of the log odds ratio using retrospective logistic regression}
@@ -29,9 +31,11 @@ avg_RR_logit = function(y, t, x, w = 'control'){
     yselected = 1L
   }  else if (w=='control'){
     yselected = 0L
+  }  else if (w=='all'){
+    yselected = 1L|0L
   }
   else {
-    stop("'w' must be either 'case' or 'control'.")
+    stop("'w' must be either 'case', 'control', or 'all'.")
   }
 
   # Check whether y is either 0 or 1

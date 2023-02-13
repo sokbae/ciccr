@@ -6,7 +6,7 @@
 #' @param y n-dimensional vector of binary outcomes
 #' @param t n-dimensional vector of binary treatments
 #' @param x n by d matrix of covariates
-#' @param sampling 'cc' for case-control sampling; 'cp' for case-population sampling (default =  'cc')
+#' @param sampling 'cc' for case-control sampling; 'cp' for case-population sampling; 'rs' for case-population sampling (default =  'cc')
 #' @param p_upper a specified upper bound for the unknown true case probability (default = 1)
 #' @param cov_prob coverage probability of a confidence interval (default = 0.95)
 #' @param length specified length of a sequence from 0 to p_upper (default = 21)

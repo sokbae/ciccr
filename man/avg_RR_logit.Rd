@@ -13,7 +13,9 @@ avg_RR_logit(y, t, x, w = "control")
 
 \item{x}{n by d matrix of covariates}
 
-\item{w}{'case' if the average is conditional on the case sample; 'control' if it is conditional on the control sample
+\item{w}{'case' if the average is conditional on the case sample;
+'control' if it is conditional on the control sample;
+'all' if it is based on the whole sample;
 default w =  'control'}
 }
 \value{
