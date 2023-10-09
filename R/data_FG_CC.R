@@ -21,5 +21,5 @@
 #' @references Matsumoto, B. (2020). Detecting Potential Overbilling in Medicare Reimbursement via Hours Worked: Comment.
 #' American Economic Review, 110(12), 3991-4003.
 #' @references Fang, H. and Gong, Q. (2020). Detecting Potential Overbilling in Medicare Reimbursement via Hours Worked: Reply.
-#' American Economic Review, 110(12): 4004-10.
+#' American Economic Review, 110(12), 4004-10.
 "FG_CC"
