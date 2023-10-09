@@ -5,8 +5,7 @@
 
 <!-- badges: start -->
 
-[![Travis build
-status](https://travis-ci.com/sokbae/ciccr.svg?branch=master)](https://travis-ci.com/github/sokbae/ciccr)
+[![R-CMD-check](https://github.com/sokbae/ciccr/workflows/R-CMD-check/badge.svg)](https://github.com/sokbae/ciccr/actions)
 [![](https://cranlogs.r-pkg.org/badges/ciccr)](https://CRAN.R-project.org/package=ciccr)
 [![codecov](https://codecov.io/gh/sokbae/ciccr/branch/master/graph/badge.svg?token=WZ348KLQGA)](https://codecov.io/gh/sokbae/ciccr)
 <!-- badges: end -->
@@ -40,7 +39,7 @@ We first call the ciccr package.
 library(ciccr)
 ```
 
-To illustrate the usefulness of the package, we use the dataset ACS\_CC
+To illustrate the usefulness of the package, we use the dataset ACS_CC
 that is included the package. This dataset is an extract from American
 Community Survey (ACS) 2018, restricted to white males residing in
 California with at least a bachelor’s degree. The ACS is an ongoing
@@ -53,16 +52,16 @@ about US population. We use the following variables:
   x = ACS_CC$age
 ```
 
--   The binary outcome `y` is defined to be one if a respondent’s annual
-    total pre-tax wage and salary income is top-coded. In the sample
-    extract, the top-coded income bracket has median income $565,000 and
-    the next highest income that is not top-coded is $327,000.
+- The binary outcome `y` is defined to be one if a respondent’s annual
+  total pre-tax wage and salary income is top-coded. In the sample
+  extract, the top-coded income bracket has median income \$565,000 and
+  the next highest income that is not top-coded is \$327,000.
 
--   The binary treatment `t` is defined to be one if a respondent has a
-    master’s degree, a professional degree, or a doctoral degree.
+- The binary treatment `t` is defined to be one if a respondent has a
+  master’s degree, a professional degree, or a doctoral degree.
 
--   The covariate `x` is age in years and is restricted to be between 25
-    and 70.
+- The covariate `x` is age in years and is restricted to be between 25
+  and 70.
 
 The original ACS survey is not from case-control sampling but we
 construct a case-control sample by the following procedure:

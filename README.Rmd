@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 # ciccr
 
 <!-- badges: start -->
-[![Travis build status](https://travis-ci.com/sokbae/ciccr.svg?branch=master)](https://travis-ci.com/github/sokbae/ciccr)
+[![R-CMD-check](https://github.com/sokbae/ciccr/workflows/R-CMD-check/badge.svg)](https://github.com/sokbae/ciccr/actions)
 [![](https://cranlogs.r-pkg.org/badges/ciccr)]( https://CRAN.R-project.org/package=ciccr)
 [![codecov](https://codecov.io/gh/sokbae/ciccr/branch/master/graph/badge.svg?token=WZ348KLQGA)](https://codecov.io/gh/sokbae/ciccr)
 <!-- badges: end -->
