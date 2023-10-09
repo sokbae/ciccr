@@ -6,7 +6,7 @@
 #' @param y n-dimensional vector of binary outcomes
 #' @param t n-dimensional vector of binary treatments
 #' @param x n by d matrix of covariates
-#' @param sampling 'cc' for case-control sampling; 'cp' for case-population sampling (default =  'cc')
+#' @param sampling 'cc' for case-control sampling; 'cp' for case-population sampling; 'rs' for case-population sampling (default =  'cc')
 #' @param cov_prob coverage probability of a uniform confidence band (default = 0.95)
 #'
 #' @return An S3 object of type "ciccr". The object has the following elements:
@@ -32,9 +32,9 @@
 #' @export
 cicc_RR = function(y, t, x, sampling = 'cc', cov_prob = 0.95){
 
-  # Check whether sampling is either case-control or case-population
-  if ( sum( !(sampling %in% c('cc','cp')) ) > 0 ){
-    stop("'sampling' must be either 'cc' or 'cp'.")
+  # Check whether sampling is case-control, case-population, or random
+  if ( sum( !(sampling %in% c('cc','cp','rs')) ) > 0 ){
+    stop("'sampling' must be 'cc', 'cp', or 'rs'.")
   }
 
   if (sampling=='cc'){
@@ -57,6 +57,12 @@ cicc_RR = function(y, t, x, sampling = 'cc', cov_prob = 0.95){
   }  else if (sampling=='cp'){
 
     results = avg_RR_logit(y, t, x, 'control')
+    est = rep(results$est,2)
+    se = rep(results$se,2)
+    ci = est + stats::qnorm(cov_prob)*se
+  }  else if (sampling=='rs'){
+
+    results = avg_RR_logit(y, t, x, 'all')
     est = rep(results$est,2)
     se = rep(results$se,2)
     ci = est + stats::qnorm(cov_prob)*se

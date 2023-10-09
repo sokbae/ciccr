@@ -13,7 +13,7 @@ cicc_RR(y, t, x, sampling = "cc", cov_prob = 0.95)
 
 \item{x}{n by d matrix of covariates}
 
-\item{sampling}{'cc' for case-control sampling; 'cp' for case-population sampling (default =  'cc')}
+\item{sampling}{'cc' for case-control sampling; 'cp' for case-population sampling; 'rs' for case-population sampling (default =  'cc')}
 
 \item{cov_prob}{coverage probability of a uniform confidence band (default = 0.95)}
 }

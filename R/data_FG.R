@@ -1,4 +1,4 @@
-#' FS
+#' FG
 #'
 #' Dataset from Fang and Gong (2017,2020).
 #' The original dataset in Fang and Gong (2017) is updated in Fang and Gong (2020) after Matsumoto (2020) pointed out data and coding errors in the original work.
@@ -22,4 +22,4 @@
 #' American Economic Review, 110(12), 3991-4003.
 #' @references Fang, H. and Gong, Q. (2020). Detecting Potential Overbilling in Medicare Reimbursement via Hours Worked: Reply.
 #' American Economic Review, 110(12): 4004-10.
-"FS"
+"FG"

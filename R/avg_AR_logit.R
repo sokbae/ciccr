@@ -6,7 +6,7 @@
 #' @param y n-dimensional vector of binary outcomes
 #' @param t n-dimensional vector of binary treatments
 #' @param x n by d matrix of covariates
-#' @param sampling 'cc' for case-control sampling; 'cp' for case-population sampling (default =  'cc')
+#' @param sampling 'cc' for case-control sampling; 'cp' for case-population sampling; 'rs' for case-population sampling (default =  'cc')
 #' @param p_upper specified upper bound for the unknown true case probability (default = 1)
 #' @param length specified length of a sequence from 0 to p_upper (default = 21)
 #' @param interaction TRUE if there are interaction terms in the retrospective logistic model; FALSE if not (default = TRUE)
@@ -44,10 +44,18 @@ avg_AR_logit = function(y, t, x, sampling = 'cc', p_upper = 1L, length = 21L, in
     stop("Each element of 't' must be either 0 or 1.")
   }
 
-  # Check whether sampling is either case-control or case-population
-  if ( sum( !(sampling %in% c('cc','cp')) ) > 0 ){
-    stop("'sampling' must be either 'cc' or 'cp'.")
+  # Check whether sampling is case-control, case-population, or random
+  if ( sum( !(sampling %in% c('cc','cp','rs')) ) > 0 ){
+    stop("'sampling' must be 'cc', 'cp', or 'rs'.")
   }
+
+  # grid points for p
+  pgrd = seq(from = 0, to = p_upper, length.out = ceiling(length))
+  pseq = matrix(pgrd, nrow=1)
+
+### Estimation of the upper bound on AR under case-control and case-population sampling
+
+if (sampling!='rs'){
 
   # Prospective logistic estimation of P(Y=1|X=x)
 
@@ -60,8 +68,6 @@ avg_AR_logit = function(y, t, x, sampling = 'cc', p_upper = 1L, length = 21L, in
 
   # Estimation of r(x,p)
 
-  pgrd = seq(from = 0, to = p_upper, length.out = ceiling(length))
-  pseq = matrix(pgrd, nrow=1)
   hhat = mean(y)
 
   if (sampling=='cc'){
@@ -130,6 +136,36 @@ avg_AR_logit = function(y, t, x, sampling = 'cc', p_upper = 1L, length = 21L, in
     betaAR_cp = colMeans(r_cp*GammaAR_cp*(1-y))/mean(1-y)
     est = betaAR_cp
 
+  }
+
+}
+
+### Estimation of the upper bound on AR under random sampling
+
+  if (sampling=='rs'){
+
+    # Prospective logistic estimation of P(Y=1|T=t,X=x)
+
+    if (interaction == TRUE){
+
+      lm_pro = stats::glm(y~t+x+t:x, family=stats::binomial("logit"))
+      est_pro = stats::coef(lm_pro)
+      x_reg_y1 = cbind(1,1,x,1*x)
+      x_reg_y0 = cbind(1,0,x,0*x)
+
+    } else if (interaction == FALSE){
+
+      lm_pro = stats::glm(y~t+x, family=stats::binomial("logit"))
+      est_pro = stats::coef(lm_pro)
+      x_reg_y1 = cbind(1,1,x)
+      x_reg_y0 = cbind(1,0,x)
+    }
+
+    fit_pro_y1 = exp(x_reg_y1%*%est_pro)/(1+exp(x_reg_y1%*%est_pro))
+    fit_pro_y0 = exp(x_reg_y0%*%est_pro)/(1+exp(x_reg_y0%*%est_pro))
+
+    est = mean(fit_pro_y1) - mean(fit_pro_y0)
+    est = rep(est, length)
   }
 
   outputs = list("est" = est, "pseq" = pgrd)
