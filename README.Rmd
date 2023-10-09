@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 [![codecov](https://codecov.io/gh/sokbae/ciccr/branch/master/graph/badge.svg?token=WZ348KLQGA)](https://codecov.io/gh/sokbae/ciccr)
 <!-- badges: end -->
 
-The goal of ciccr is to implement methods for carrying out causal inference in case-control studies ([Jun and Lee, 2020](https://arxiv.org/abs/2004.08318)).
+The goal of ciccr is to implement methods for carrying out causal inference in case-control and case-population studies ([Jun and Lee, 2023](https://arxiv.org/abs/2004.08318)).
 
 ## Installation
 
@@ -136,8 +136,8 @@ See the vignette for other examples that include inference on attributable risk 
 
 # References
 
-Sung Jae Jun and Sokbae Lee. Causal Inference under Outcome-Based Sampling with Monotonicity Assumptions. 
-https://arxiv.org/abs/2004.08318.
+Sung Jae Jun and Sokbae Lee. (2023). Causal Inference under Outcome-Based Sampling with Monotonicity Assumptions. 
+https://arxiv.org/abs/2004.08318, accepted for publication in Journal of Business & Economic Statistics.
 
 Manski, C.F. (1997). Monotone Treatment Response. Econometrica, 65(6), 1311-1334.
 
