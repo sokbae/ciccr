@@ -11,8 +11,8 @@
 <!-- badges: end -->
 
 The goal of ciccr is to implement methods for carrying out causal
-inference in case-control studies ([Jun and Lee,
-2020](https://arxiv.org/abs/2004.08318)).
+inference in case-control and case-population studies ([Jun and Lee,
+2023](https://arxiv.org/abs/2004.08318)).
 
 ## Installation
 
@@ -209,9 +209,10 @@ attributable risk and how to work with case-population samples.
 
 # References
 
-Sung Jae Jun and Sokbae Lee. Causal Inference under Outcome-Based
+Jun, S.J. and Lee, S. (2023). Causal Inference under Outcome-Based
 Sampling with Monotonicity Assumptions.
-<https://arxiv.org/abs/2004.08318>.
+<https://arxiv.org/abs/2004.08318>, accepted for publication in Journal
+of Business & Economic Statistics.
 
 Manski, C.F. (1997). Monotone Treatment Response. Econometrica, 65(6),
 1311-1334.
