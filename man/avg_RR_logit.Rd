@@ -36,6 +36,6 @@ Averages the log odds ratio using retrospective logistic regression.
 
 }
 \references{
-Jun, S.J. and Lee, S. (2020). Causal Inference under Outcome-Based Sampling with Monotonicity Assumptions.
+Jun, S.J. and Lee, S. (2023). Causal Inference under Outcome-Based Sampling with Monotonicity Assumptions.
 \url{https://arxiv.org/abs/2004.08318}.
 }

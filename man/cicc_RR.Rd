@@ -13,7 +13,7 @@ cicc_RR(y, t, x, sampling = "cc", cov_prob = 0.95)
 
 \item{x}{n by d matrix of covariates}
 
-\item{sampling}{'cc' for case-control sampling; 'cp' for case-population sampling; 'rs' for case-population sampling (default =  'cc')}
+\item{sampling}{'cc' for case-control sampling; 'cp' for case-population sampling; 'rs' for random sampling (default =  'cc')}
 
 \item{cov_prob}{coverage probability of a uniform confidence band (default = 0.95)}
 }
@@ -37,7 +37,7 @@ under the monotone treatment response (MTR) and monotone treatment selection (MT
 
 }
 \references{
-Jun, S.J. and Lee, S. (2020). Causal Inference under Outcome-Based Sampling with Monotonicity Assumptions.
+Jun, S.J. and Lee, S. (2023). Causal Inference under Outcome-Based Sampling with Monotonicity Assumptions.
 \url{https://arxiv.org/abs/2004.08318}.
 
 Manski, C.F. (1997). Monotone Treatment Response.

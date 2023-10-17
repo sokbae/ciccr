@@ -6,7 +6,7 @@
 #' @param y n-dimensional vector of binary outcomes
 #' @param t n-dimensional vector of binary treatments
 #' @param x n by d matrix of covariates
-#' @param sampling 'cc' for case-control sampling; 'cp' for case-population sampling; 'rs' for case-population sampling (default =  'cc')
+#' @param sampling 'cc' for case-control sampling; 'cp' for case-population sampling; 'rs' for random sampling (default =  'cc')
 #' @param p_upper specified upper bound for the unknown true case probability (default = 1)
 #' @param length specified length of a sequence from 0 to p_upper (default = 21)
 #' @param interaction TRUE if there are interaction terms in the retrospective logistic model; FALSE if not (default = TRUE)
@@ -24,7 +24,7 @@
 #'   x = ciccr::ACS_CC$age
 #'   results = avg_AR_logit(y, t, x, sampling = 'cc')
 #'
-#' @references Jun, S.J. and Lee, S. (2020). Causal Inference under Outcome-Based Sampling with Monotonicity Assumptions.
+#' @references Jun, S.J. and Lee, S. (2023). Causal Inference under Outcome-Based Sampling with Monotonicity Assumptions.
 #' \url{https://arxiv.org/abs/2004.08318}.
 #' @references Manski, C.F. (1997). Monotone Treatment Response.
 #' Econometrica, 65(6), 1311-1334.
