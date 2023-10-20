@@ -457,3 +457,16 @@ test_that("AR: The results should be different between FG and FG_CC", {
   expect_false(sum((results_rs$est != results_cc$est[2]))==0)
 
 })
+
+test_that("The results for avg_AR_logit under random sampling should be different between interaction = TRUE and FALSE", {
+
+  y = ACS_CC$topincome
+  t = ACS_CC$baplus
+  x = ACS_CC$age
+  results1 = avg_AR_logit(y, t, x, sampling = 'rs', interaction = FALSE)
+  results2 = avg_AR_logit(y, t, x, sampling = 'rs', interaction = TRUE)
+
+  expect_false(sum((results1$est != results2$est))==0)
+
+})
+

@@ -1,5 +1,6 @@
 ## R CMD check results
-There were no ERRORs or WARNINGs. 
+* There were no ERRORs or WARNINGs. 
+* The spelling of "Monotonicity" is correct. 
 
 ## This version
 This version includes the following updates:

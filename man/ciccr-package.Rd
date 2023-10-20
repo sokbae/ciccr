@@ -6,7 +6,7 @@
 \alias{ciccr-package}
 \title{ciccr: Causal Inference in Case-Control and Case-Population Studies}
 \description{
-Estimation and inference methods for causal relative and attributable risk in case-control and case-population studies under the monotone treatment response (MTR) and monotone treatment selection (MTS) assumptions. For more details, see the paper by Jun and Lee (2023), "Causal Inference under Outcome-Based Sampling with Monotonicity Assumptions," \href{https://arxiv.org/abs/2004.08318}{arXiv:2004.08318 [econ.EM]}, accepted for publication in Journal of Business & Economic Statistics.
+Estimation and inference methods for causal relative and attributable risk in case-control and case-population studies under the monotone treatment response and monotone treatment selection assumptions. For more details, see the paper by Jun and Lee (2023), "Causal Inference under Outcome-Based Sampling with Monotonicity Assumptions," \href{https://arxiv.org/abs/2004.08318}{arXiv:2004.08318 [econ.EM]}, accepted for publication in Journal of Business & Economic Statistics.
 }
 \seealso{
 Useful links:
