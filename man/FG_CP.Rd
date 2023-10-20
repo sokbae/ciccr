@@ -17,7 +17,7 @@ A data frame with 4,522 rows and 5 variables:
 \source{
 Fang, H. and Gong, Q. (2020) Data and Code for: Detecting Potential Overbilling in Medicare Reimbursement via Hours Worked: Reply.
 Nashville, TN: American Economic Association [publisher]. Ann Arbor, MI: Inter-university Consortium for Political and Social Research [distributor], 2020-11-23.
-\url{https://doi.org/10.3886/E119192V1}
+\doi{10.3886/E119192V1}
 }
 \usage{
 FG_CP

@@ -8,3 +8,10 @@
 * This version includes the following updates:
   * estimation and inference methods for causal relative and attributable risk, 
   * handling of both case-control and case-population studies.
+
+# ciccr 0.3.0 (2023-10-20)
+* The third version is submitted to CRAN.
+* This version includes the following updates:
+  * addition of the data extract from Fang and Gong (2020)
+  * the case of random sampling is included 
+  * document _PACKAGE to get all the defaults for package documentation 

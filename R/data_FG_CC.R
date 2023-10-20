@@ -15,7 +15,7 @@
 #' }
 #' @source Fang, H. and Gong, Q. (2020) Data and Code for: Detecting Potential Overbilling in Medicare Reimbursement via Hours Worked: Reply.
 #' Nashville, TN: American Economic Association [publisher]. Ann Arbor, MI: Inter-university Consortium for Political and Social Research [distributor], 2020-11-23.
-#' \url{https://doi.org/10.3886/E119192V1}
+#' \doi{10.3886/E119192V1}
 #' @references Fang, H. and Gong, Q. (2017). Detecting Potential Overbilling in Medicare Reimbursement via Hours Worked.
 #' American Economic Review, 107(2), 562-91.
 #' @references Matsumoto, B. (2020). Detecting Potential Overbilling in Medicare Reimbursement via Hours Worked: Comment.
